@@ -15,7 +15,8 @@ import d2Admin from '@/plugin/d2admin'
 // 菜单和路由设置
 import router from './router'
 import menuHeader from '@/menu/header'
-import menuAside from '@/menu/aside'
+// import menuAside from '@/menu/aside'
+import menuAside from '@/config/menu-config.js'
 import { frameInRoutes } from '@/router/routes'
 
 // 核心插件
@@ -34,6 +35,7 @@ new Vue({
     this.$store.commit('d2admin/menu/headerSet', menuHeader)
     // 设置侧边栏菜单
     this.$store.commit('d2admin/menu/asideSet', menuAside)
+    // this.$store.commit('d2admin/menu/asideSet', menuABC)
   },
   mounted () {
     // 展示系统信息

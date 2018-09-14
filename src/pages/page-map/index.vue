@@ -15,6 +15,8 @@
 </template>
 
 <script>
+// import $ from 'jquery'
+// import * as d3 from 'd3'
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -44,3 +46,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* @import './css/leaflet.css';
+@import './css/bootstrap.min.css';
+@import './css/style.css'; */
+</style>
