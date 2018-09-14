@@ -1,5 +1,5 @@
 <template>
-  <i class="`fa fa-${name} fa-${size}`" aria-hidden="true"></i>
+  <i class="fa" :class="`fa-${name}`" aria-hidden="true"></i>
 </template>
 
 <script>
@@ -11,11 +11,6 @@ export default {
       type: String,
       required: false,
       default: 'font-awesome'
-    },
-    size: {
-      type: String,
-      required: false,
-      default: 'lg'
     }
   }
 }
