@@ -18,6 +18,11 @@ import menuHeader from '@/menu/header'
 import menuAside from '@/menu/aside'
 import { frameInRoutes } from '@/router/routes'
 
+import VueSocketio from 'vue-socket.io'
+import io from 'socket.io-client'
+let iourl = 'http://192.168.85.133:8080/webagent'
+Vue.use(VueSocketio, io(iourl)) // 注意和本地服务器地址及端口一致
+
 // 核心插件
 Vue.use(d2Admin)
 /* eslint-disable no-new */
