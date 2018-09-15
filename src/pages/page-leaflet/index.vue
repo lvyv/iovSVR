@@ -91,6 +91,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 // import Vue from 'vue'
 import { LMap, LTileLayer, LMarker, LPolyline, LLayerGroup, LTooltip, LPopup, LControlZoom, LControlAttribution, LControlScale, LControlLayers } from 'vue2-leaflet'
 import Glyph from 'leaflet.icon.glyph'
