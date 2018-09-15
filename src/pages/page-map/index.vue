@@ -11,7 +11,12 @@
     import markerClusterGroup from 'leaflet.markercluster'
     import $ from 'jquery'
     import * as d3 from 'd3'
-    import './moment.js'
+    import * as moment from 'moment'
+    import 'moment/locale/zh-cn'
+
+    moment.locale('zh-cn');
+    console.log(moment.locale());
+    
     // import mapProvider from '../utilities/leaflet.MapProviders.js'
     // import easyButton from '../utilities/leaflet.EasyButton.vue'
     // const MAP_IMAGE_PATH = "//cdn.bootcss.com/leaflet/1.0.0-rc.2/images/";
@@ -86,9 +91,12 @@
 
                 // area chart
                 var margin = { top: 30, right: 20, bottom: 20, left: 40 },
-                areaChartWidth = $(window).width() - margin.left - margin.right - 40,
+                areaChartWidth = $('#leaflet-map').width(), //$(window).width() - margin.left - margin.right - 40,
                 areaChartHeight = 140 - margin.top - margin.bottom
-
+                
+                //console.log()
+                console.log(areaChartWidth,areaChartHeight)
+                
                 var parseDate = d3.timeFormat('%d-%b-%y').parse
 
                 var x = d3.scaleLinear()
@@ -213,7 +221,7 @@
         bottom: 5px;
         position: absolute;
         width: auto;
-        height: 450px;
+        height: auto;
         z-index: 0;
     }
     /* icon style */
