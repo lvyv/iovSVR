@@ -21,6 +21,13 @@ import { frameInRoutes } from '@/router/routes'
 
 // 核心插件
 Vue.use(d2Admin)
+// 通信总线
+var eventBus = {
+  install (Vue, options) {
+    Vue.prototype.$bus = new Vue()
+  }
+}
+Vue.use(eventBus)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
