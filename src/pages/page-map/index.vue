@@ -7,7 +7,8 @@
 
 <script>
 /* eslint-disable */
-    import L from 'leaflet'
+    import * as L from 'leaflet'
+    import 'leaflet-easybutton'
     import markerClusterGroup from 'leaflet.markercluster'
     import $ from 'jquery'
     import * as d3 from 'd3'
@@ -49,10 +50,20 @@
         mounted() {
             this.initMap();
             this.addMapLayer();
-            // this.addMapBtn();
-            // this.initListenMsg();
+            this.addMapBtn();
+            this.initListenMsg();
             this.createAreaChart();
             $('.box').fadeIn(250);
+        },
+        created () {
+          this.$bus.$on('add-todo', this.addTodo);
+          this.$bus.$on('delete-todo', this.deleteTodo);
+        },
+        // 最好在组件销毁前
+        // 清除事件监听
+        beforeDestroy: function () {
+          this.$bus.$off('add-todo', this.addTodo);
+          this.$bus.$off('delete-todo', this.deleteTodo);
         },
         methods: {
             initMap() {
@@ -74,16 +85,18 @@
             addMapLayer() {
                 // L.tileLayer.mapProvider('GaoDe.Normal.Map',
                 //   {attribution: this.map_config.attribution}).addTo(this.map);
-                L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                // L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   {attribution: '&copy; OpenStreetMap contributors, &copy;'}).addTo(this.map);
-            },
+             },
             addMapBtn() {
                 // add rest button
-                this.reset_btn = L.easyButton('fa-refresh', () => {
+                this.reset_btn = L.easyButton('fa-location-arrow', () => {
                     this.$bus.$emit('map-data-reset');
                 });
                 this.reset_btn.addTo(this.map);
                 this.reset_btn.disable();
+                
             },
             createAreaChart () {
                 var svg = d3.select(this.map.getPanes().overlayPane).append('svg'),
@@ -100,7 +113,7 @@
                 var parseDate = d3.timeFormat('%d-%b-%y').parse
 
                 var x = d3.scaleLinear()
-                .range([0, areaChartWidth])
+                .range([0, areaChartWidth - 100])
 
                 var y = d3.scaleLinear()
                 .range([areaChartHeight, 0])
@@ -231,11 +244,11 @@
         width: 30px;
         height: 30px;
         line-height: 30px;
-        background-color: #fff;
+        background-color: rgb(255, 255, 255);
     }
     #leaflet-map .easy-button-button .fa {
         vertical-align: 0;
-        font-size: 1.3em;
+        font-size: 1.5em;
     }
     @media (max-width: 768px) {
         #leaflet-map {
