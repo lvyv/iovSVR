@@ -85,8 +85,8 @@
             addMapLayer() {
                 // L.tileLayer.mapProvider('GaoDe.Normal.Map',
                 //   {attribution: this.map_config.attribution}).addTo(this.map);
-                // L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+                // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   {attribution: '&copy; OpenStreetMap contributors, &copy;'}).addTo(this.map);
              },
             addMapBtn() {
