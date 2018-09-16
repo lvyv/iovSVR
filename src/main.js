@@ -15,8 +15,8 @@ import d2Admin from '@/plugin/d2admin'
 // 菜单和路由设置
 import router from './router'
 import menuHeader from '@/menu/header'
-// import menuAside from '@/menu/aside'
-import menuAside from '@/config/menu-config.js'
+import menuAside from '@/menu/aside'
+// import menuAside from '@/config/menu-config.js'
 import { frameInRoutes } from '@/router/routes'
 
 import VueSocketio from 'vue-socket.io'
