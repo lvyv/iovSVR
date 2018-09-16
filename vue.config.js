@@ -1,4 +1,19 @@
 const path = require('path')
+const webpack = require('webpack')
+//const HtmlWebpackPlugin = require('html-webpack-plugin')
+//const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+
+/*var extractList = new ExtractTextPlugin({
+      filename: utils.assetsPath('css/[name].[contenthash].css'),
+      // Setting the following option to `false` will not extract CSS from codesplit chunks.
+      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
+      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
+      allChunks: false,
+    })*/
 
 // 拼接路径
 function resolve (dir) {
@@ -6,13 +21,24 @@ function resolve (dir) {
 }
 
 // 基础路径 注意发布之前要先修改这里
-const baseUrl = '/d2-admin-start-kit-preview/'
+const staticUrl = path.resolve(__dirname, './public') 
+const baseUrl = '/'
+const productionSourceMap = false
+const pathsToClean = [
+  staticUrl,
+]
+const cleanOptions = {
+  root:    path.resolve(__dirname, './'),
+  verbose:  true,
+  dry:      false
+}
 
 module.exports = {
   baseUrl: baseUrl, // 根据你的实际情况更改这里
+  outputDir: staticUrl,
   lintOnSave: true,
   devServer: {
-    publicPath: baseUrl // 和 baseUrl 保持一致
+    publicPath: baseUrl// 和 baseUrl 保持一致
   },
   // webpack 设置
   // 默认设置: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config/base.js
@@ -54,10 +80,77 @@ module.exports = {
     // 重新设置 alias
     config.resolve.alias
       .set('@', resolve('src'))
+    //copy ssh css.
+    config.plugin('copy-ssh-css')
+      .use(CopyWebpackPlugin, [[{
+        from: path.resolve(__dirname,'./src/pages/page-ssh/webssh.css'),
+        to: staticUrl,
+      }]])
+    //split chuncks
+    config.optimization.splitChunks({
+      chunks: "async",
+      minSize: 30000,
+      minChunks: 2,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: true,
+      cacheGroups: {
+          manifest: {
+              minChunks: Infinity,
+              priority: -20,
+              reuseExistingChunk: true,
+          },
+          vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10
+          }
+      }
+    })
     // babel-polyfill 加入 entry
     const entry = config.entry('app')
     entry
       .add('babel-polyfill')
       .end()
+  },
+  configureWebpack: config => {
+    plugins: [
+      new CleanWebpackPlugin(pathsToClean, cleanOptions),
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false
+          }
+        },
+        sourceMap:  productionSourceMap,
+        parallel: true
+      }),
+  
+     /*
+     new HtmlWebpackPlugin({
+        filename: 'webssh.html',
+        template: './static/webssh.htm',
+        inject: true,
+        chunks: ['manifest', 'vendor','webssh']
+      }),*/
+      // keep module.id stable when vendor modules does not change
+      new webpack.HashedModuleIdsPlugin(),
+      // enable scope hoisting
+      new webpack.optimize.ModuleConcatenationPlugin(),
+  
+      // split vendor js into its own file
+      /*new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks (module) {
+          // any required modules inside node_modules are extracted to vendor
+          return (
+            module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf(
+              path.join(__dirname, './node_modules')
+            ) === 0
+          )
+        }
+      })*/
+    ]
   }
 }
