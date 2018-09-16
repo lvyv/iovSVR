@@ -2,6 +2,16 @@
 <d2-container>
     <div id="leaflet-map"></div>
     <div class="areaChartBox box"></div>
+    <!-- 首页对话框 -->
+    <div class="wrappert">
+        <div class="wrapper">
+        <div class="container overlay">
+        <div class="jumbotron" id="begin" v-on:click="onStart">
+            <h1>开始</h1>
+        </div>
+        </div>
+        </div>
+    </div>
 </d2-container>
 </template>
 
@@ -22,13 +32,8 @@
     // import easyButton from '../utilities/leaflet.EasyButton.vue'
     // const MAP_IMAGE_PATH = "//cdn.bootcss.com/leaflet/1.0.0-rc.2/images/";
     
-// delete L.Icon.Default.prototype._getIconUrl
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-//   iconUrl: require('leaflet/dist/images/marker-icon.png'),
-//   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-// })
-    const MAP_IMAGE_PATH = "../../assets/images/leaflet/";
+    //const MAP_IMAGE_PATH = "../../assets/leaflet/";
+
     export default {
         props: ['mapData'],
         data () {
@@ -39,8 +44,8 @@
                 init_map_data: null,
                 reset_btn: null,
                 map_config: {
-                    zoom: 4,
-                    center: [37.5, 106],
+                    zoom: 14,
+                    center: [40.7127, -74.0059],
                     minZoom: 3,
                     maxZoom: 18,
                     attribution: "&copy; OSM",
@@ -51,24 +56,35 @@
             this.initMap();
             this.addMapLayer();
             this.addMapBtn();
-            this.initListenMsg();
             this.createAreaChart();
-            $('.box').fadeIn(250);
+
+            // 可以采用v-on
+            // $('#begin').click(function () {
+            //     $('.overlay').fadeOut(250);
+            //     $('.box').fadeIn(250);
+            // })
+            // this.initListenMsg();
         },
         created () {
-          this.$bus.$on('add-todo', this.addTodo);
-          this.$bus.$on('delete-todo', this.deleteTodo);
+        //   this.$bus.$on('add-todo', this.addTodo);
+        //   this.$bus.$on('delete-todo', this.deleteTodo);
         },
         // 最好在组件销毁前
         // 清除事件监听
         beforeDestroy: function () {
-          this.$bus.$off('add-todo', this.addTodo);
-          this.$bus.$off('delete-todo', this.deleteTodo);
+        //   this.$bus.$off('add-todo', this.addTodo);
+        //   this.$bus.$off('delete-todo', this.deleteTodo);
         },
         methods: {
             initMap() {
                 // need set default L.Icon.Default.imagePath
-                L.Icon.Default.imagePath = MAP_IMAGE_PATH;
+                // L.Icon.Default.imagePath = MAP_IMAGE_PATH;
+                delete L.Icon.Default.prototype._getIconUrl;
+                    L.Icon.Default.mergeOptions({
+                    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+                    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+                    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+                });
                 this.map = L.map("leaflet-map",{
                     center: this.map_config.center,
                     zoom: this.map_config.zoom,
@@ -80,7 +96,11 @@
                     if(this.reset_btn && this.map.getZoom() !== this.map_config.zoom) {
                         this.reset_btn.enable();
                     }
-                })
+                });
+                // Creating a marker
+                var marker = L.marker(this.map_config.center);
+                // Adding marker to the map
+                marker.addTo(this.map);
             },
             addMapLayer() {
                 // L.tileLayer.mapProvider('GaoDe.Normal.Map',
@@ -96,7 +116,6 @@
                 });
                 this.reset_btn.addTo(this.map);
                 this.reset_btn.disable();
-                
             },
             createAreaChart () {
                 var svg = d3.select(this.map.getPanes().overlayPane).append('svg'),
@@ -171,7 +190,8 @@
                 .style('text-anchor', 'end')
                 .text('Fares ($)')
                 // end area chart
-            },
+                // $('.box').fadeIn(250);
+            }, 
             addClusterLayer(geoJsonData) {
                 // clear pervious layer
                 if(this.markers) {
@@ -191,7 +211,6 @@
                 if(map_data.features.length !== 0) {
                     this.addClusterLayer(map_data);
                     this.map.fitBounds(this.markers.getBounds());
-                    this.createAreaChart();
                 }
             },
             initListenMsg() {
@@ -216,6 +235,11 @@
                         this.reset_btn.disable();
                     }
                 });
+            },
+            /* event handlers */
+            onStart () {
+                $('.overlay').fadeOut(250);
+                $('.box').fadeIn(250);
             }
         }
     }

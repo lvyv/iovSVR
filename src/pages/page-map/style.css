@@ -281,3 +281,36 @@
     .twitter-button {
         padding: 16px 0px;
     }
+
+
+    .wrappert {
+        height: 100%; 
+        width: 100%;
+        display: table;    
+    }
+    .wrapper {
+        height: 100%;
+        vertical-align: middle;
+        display: table-cell;
+        text-align: center;
+    }
+    .container {
+        width: 400px; /* specify a width */
+        margin: auto;  /* centers the container */
+        padding: 10px; /* adds some padding to the left and right*/
+    }
+    .jumbotron { 
+        padding: 0px; /* fills out the jumbotron */
+        background-color: #111;
+    }
+    .container .jumbotron  { 
+        max-width: 100%; /* allows the jumbotron to adjust on smaller widths */
+        background-color: rgb(119, 119, 119);
+    }
+    .jumbotron h1 { 
+        text-align: center; /* centers the heading */
+        color: #DDD;
+        font-family: 'Raleway', Helvetica, Arial, sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
