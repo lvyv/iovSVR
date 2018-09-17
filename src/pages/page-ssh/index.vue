@@ -37,7 +37,6 @@
   </el-table>
 </template>
 
-
   </d2-container>
 </template>
 <script>
