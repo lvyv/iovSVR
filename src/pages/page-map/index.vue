@@ -14,13 +14,13 @@
     <!-- 日期时间对话框 -->
     </div>
         <div class="dateTimeBox box">
-        <div class = "date"></div>
-        <div class = "time"><d2-icon name="clock-o"/><span class = "readableTime"></span></div>
+        <div class = "date">{{pos_time_.YMD}}</div>
+        <div class = "time"><d2-icon name="clock-o"/><span class = "readableTime">{{pos_time_.HMS}}</span></div>
         <div>
-            <el-button size="mini" plain><d2-icon name="fast-backward"/><span></span> Slower</el-button>
-            <el-button size="mini" plain>Faster <span ></span><d2-icon name="fast-forward"/> </el-button>
+            <el-button size="mini" plain v-on:click="pos_time_.time_factor--"><d2-icon name="fast-backward"/><span></span> Slower</el-button>
+            <el-button size="mini" plain v-on:click="pos_time_.time_factor++">Faster <span ></span><d2-icon name="fast-forward"/> </el-button>
         </div>
-        <div>Time Factor: <span class = "timeFactor"></span> minutes per second</div>
+        <div class = "timeFactor">Time Factor: <span>{{pos_time_.time_factor}}</span> minutes per second</div>
     </div>
 </d2-container>
 </template>
@@ -50,7 +50,6 @@
             return {
                 map: null,
                 markers: null,
-            areaChartSvg: null,
                 geoJsonLayer: null,
                 init_map_data: null,
                 reset_btn: null,
@@ -61,6 +60,14 @@
                     maxZoom: 18,
                     attribution: "&copy; OSM",
                 },
+                pos_time_: {
+                    time: null,
+                    time_factor: 5,
+                    timer_id: null,
+                    YMD: "",
+                    HMS: ""            
+                },
+                count_: 1
             };
         },
         mounted() {
@@ -68,7 +75,7 @@
             this.addMapLayer();
             this.addMapBtn();
             this.createAreaChart();
-
+            this.timerOn();
             // 可以采用v-on
             // $('#begin').click(function () {
             //     $('.overlay').fadeOut(250);
@@ -85,6 +92,7 @@
         beforeDestroy: function () {
         //   this.$bus.$off('add-todo', this.addTodo);
         //   this.$bus.$off('delete-todo', this.deleteTodo);
+            this.timerOff();
         },
         methods: {
             initMap() {
@@ -250,24 +258,43 @@
                     }
                 });
             },
+            /* vue component events */
+            timerOn() {
+                function updateTimes(that) {
+                    that.pos_time_.time = that.pos_time_.time.add(1, 'minutes');
+                    that.pos_time_.YMD = that.pos_time_.time.format("dddd, MMMM Do YYYY");
+                    that.pos_time_.HMS = that.pos_time_.time.format("h:mm a");
+                    that.pos_time_.timer_id = setTimeout(updateTimes, 1000 / that.pos_time_.time_factor,that);
+                };
+                console.log("timer on");
+                this.pos_time_.time = moment();
+                this.pos_time_.timer_id = setTimeout(updateTimes,1000 / this.pos_time_.time_factor, this);
+                console.log(this.pos_time_.timer_id);
+            },
+            timerOff() {
+                console.log("timer off");
+                this.pos_time_.time = null;
+                clearInterval(this.pos_time_.timer_id);
+            },
             /* event handlers */
             onStart () {
                 $('.overlay').fadeOut(250);
                 $('.box').fadeIn(250);
                 
-                var timer;
-                var time = moment();
-                var timeFactor = 5;
-                $('.timeFactor').html(timeFactor);
-                var tweenToggle = 0;
-                function updateTimer() {
-                    time.add(1, 'minutes');
-                    $('.readableTime').text(time.format('h:mm a'));
-                    $('.date').text(time.format('dddd, MMMM Do YYYY'));
-                    timer = setTimeout(function () { updateTimer() }, (1000 / timeFactor));
-                }          
-                setTimeout(function () {updateTimer(); /* iterate(); */ }, 500);
-            },            
+                // var time = moment();
+                // var timeFactor = 5;
+                // $('.timeFactor').html(timeFactor);
+                // var tweenToggle = 0;
+                // this.pos_time_.timer_id = setInterval(updateTimer, 1000 / timeFactor);
+                // function updateTimer() {
+                    // time.add(1, 'minutes');
+                    // $('.readableTime').text(time.format('h:mm a'));
+                    // $('.date').text(time.format('dddd, MMMM Do YYYY'));
+                    // timer = setTimeout(function () { updateTimer() }, (1000 / timeFactor));
+                // }          
+                // setTimeout(function () {updateTimer(); /* iterate(); */ }, 500);
+            }, 
+                       
         }
     }
 </script>

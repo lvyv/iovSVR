@@ -21,7 +21,7 @@ import { frameInRoutes } from '@/router/routes'
 
 import VueSocketio from 'vue-socket.io'
 import io from 'socket.io-client'
-let iourl = 'http://192.168.85.133:8080/webagent'
+let iourl = 'http://192.168.1.216:8080/webagent'
 Vue.use(VueSocketio, io(iourl)) // 注意和本地服务器地址及端口一致
 
 // 核心插件
