@@ -1,0 +1,106 @@
+</script>
+import axios from 'axios'
+
+export default {
+  name: 'realtime',
+  data: function () {
+    return {
+      columns: [
+        {
+          title: '序列号',
+          key: 'sn'
+        },
+        {
+          title: '设备自编号',
+          key: 'num'
+        },
+        {
+          title: '安装点位',
+          key: 'position'
+        },
+        {
+          title: '管理员',
+          children: [
+            {
+              title: '姓名',
+              key: 'name'
+            },
+            {
+              title: '电话',
+              key: 'phone'
+            }
+          ]
+        },
+        {
+          title: '上传时间',
+          key: 'time'
+        },
+        {
+          title: '上传地址',
+          key: 'address'
+        },
+        {
+          title: '在线状态',
+          key: 'status'
+        },
+        {
+          title: '传感器数据',
+          children: [
+            {
+              title: '压力值',
+              key: 'press'
+            },
+            {
+              title: '位移量',
+              key: 'move'
+            },
+            {
+              title: '震动',
+              key: 'quake'
+            }
+          ]
+        }
+      ],
+      devtable: []
+    }
+  },
+  created: function () {
+    this.initdata()
+  },
+  computed: {
+  },
+  watch: {
+  },
+  sockets: {
+    connect: function () {
+      alert(this.$socket.connected)
+    },
+    realtime: function (data) {
+      if (Array.isArray(this.devtable)) {
+        this.devtable.splice(0, this.devtable.length)
+      }
+      for (var i in data) {
+        alert(data[i].SN)
+        var tabledata = {
+          'sn': data[i].SN,
+          'num': data[i].NUM,
+          'position': data[i].POSITION,
+          'name': data[i].NAME,
+          'phone': data[i].PHONE,
+          'time': data[i].TIME,
+          'address': data[i].ADDR,
+          'press': data[i].PRESS,
+          'move': data[i].MOVE,
+          'quake': data[i].QUAKE
+        }
+        this.devtable.push(tabledata)
+      }
+    }
+  },
+  methods: {
+    initdata: function () {
+      this.$socket.emit('start')
+    }
+  }
+}
+</script>

@@ -19,15 +19,21 @@ const frameIn = [
         component: () => import('@/pages/index')
       },
       {
-        path: '/page1',
-        name: 'page1',
-        component: () => import('@/pages/page1'),
-        meta: { meta, title: '传感图表' }
+        path: '/page-dev-realtime',
+        name: 'page-dev-realtime',
+        component: () => import('@/pages/page-dev-realtime'),
+        meta: { meta, title: '传感器实时数据' }
       },
       {
-        path: '/page2',
-        name: 'page2',
-        component: () => import('@/pages/page2'),
+        path: '/page-dev-history',
+        name: 'page-dev-history',
+        component: () => import('@/pages/page-dev-history'),
+        meta: { meta, title: '传感器历史数据' }
+      },
+      {
+        path: '/page-video',
+        name: 'page-video',
+        component: () => import('@/pages/page-video'),
         meta: { meta, title: '视频展示' }
       },
       {
@@ -38,7 +44,7 @@ const frameIn = [
       },
       {
         path: '/page-map',
-        name: 'page-demo',
+        name: 'page-map',
         component: () => import('@/pages/page-map'),
         meta: { meta, title: '实时轨迹' }
       },
