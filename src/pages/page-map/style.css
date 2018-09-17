@@ -107,9 +107,9 @@
 
     .dateTimeBox {
         position: absolute;
-        top: 65px;
+        top: lefttop;
         left: 15px;
-        width: 300px;  
+        width: 228px;  
     }
      .legendBox {
         position: absolute;
@@ -166,17 +166,22 @@
 
     .time {
 
-        font-size: 3em;
+        font-size: 2em;
     }
 
     .readableTime {
         position: relative;
-        top: -5px;
+        top: 0px;
+        left: 20px;
     }
 
 
     .date {
-        font-size: 18px;
+        font-size: 1em;
+    }
+
+    .timefactor {
+        font-size: 0.5em;
     }
 
     .passengerGlyphs .glyphicon {
