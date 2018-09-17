@@ -5,7 +5,7 @@ const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 /*var extractList = new ExtractTextPlugin({
@@ -116,7 +116,7 @@ module.exports = {
   },
   configureWebpack: config => {
     plugins: [
-      new BundleAnalyzerPlugin(),
+      // new BundleAnalyzerPlugin(),
       new CleanWebpackPlugin(pathsToClean, cleanOptions),
       new UglifyJsPlugin({
         uglifyOptions: {
