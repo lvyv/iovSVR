@@ -1,14 +1,9 @@
 <template>
-  <d2-container>
-  <template slot="header">
-  <title>WEBSSH</title>
-  <style>
+ <div class="box" id='webssh'>
+    <style>
     body {background-color: #000;height: 100%;margin: 0;}.dropup-content {display: none;}
-  </style>
-   <link rel="stylesheet" href="/webssh.css" />
-  </template>
-  <template>
-  <div class="box" id='webssh'>
+    </style>
+    <link rel="stylesheet" href="/webssh.css" />
     <div id="header"></div>
     <div id="terminal-container" class="terminal"></div>
     <div id="bottomdiv">
@@ -23,10 +18,7 @@
       <div id="footer"></div>
       <div id="status"></div>
     </div>
-  </div>>
-</template>
-
-  </d2-container>
+  </div>
 </template>
 
 <script>

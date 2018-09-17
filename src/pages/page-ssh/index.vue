@@ -1,6 +1,6 @@
 <template>
   <d2-container>
-  <template>
+  <template :is="currentView">
   <el-table :data="devtable" border style="width: 100%">
     <el-table-column
       prop="DEVSN"
@@ -35,12 +35,13 @@
       </template>
     </el-table-column>
   </el-table>
-</template>
+  </template>
 
   </d2-container>
 </template>
 <script>
 import axios from 'axios'
+import ssh from 'ssh'
 
 export default {
   name: 'page-ssh',
@@ -101,7 +102,9 @@ export default {
       this.$socket.emit('dev')
     },
     go2ssh: function (row) {
-      window.location.href = '/webssh/host/localhost?port=' + row.SSHADDR
+      //el table hiden.
+      //ssh component enable
+      this.currentView = ssh
     },
     tryssh: function (row) {
       console.log(row.DEVSN)

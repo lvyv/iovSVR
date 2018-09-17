@@ -5,6 +5,8 @@ const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 /*var extractList = new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
@@ -90,13 +92,13 @@ module.exports = {
     config.optimization.splitChunks({
       chunks: "async",
       minSize: 30000,
-      minChunks: 2,
+      minChunks: 1,
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
       name: true,
       cacheGroups: {
           manifest: {
-              minChunks: Infinity,
+              minChunks: 2,
               priority: -20,
               reuseExistingChunk: true,
           },
@@ -114,6 +116,7 @@ module.exports = {
   },
   configureWebpack: config => {
     plugins: [
+      new BundleAnalyzerPlugin(),
       new CleanWebpackPlugin(pathsToClean, cleanOptions),
       new UglifyJsPlugin({
         uglifyOptions: {
