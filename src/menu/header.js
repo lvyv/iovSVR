@@ -5,8 +5,14 @@ export default [
     title: '主控功能',
     icon: 'folder-o',
     children: [
-      { path: '/page1', title: '传感图表' },
-      { path: '/page2', title: '视频展示' },
+      { title: '传感视图',
+        icon: 'folder-o',
+        children: [
+          { path: '/page-dev-realtime', title: '传感器实时数据' },
+          { path: '/page-dev-history', title: '传感器历史数据' }
+        ]
+      },
+      { path: '/page-video', title: '视频展示' },
       { title: '地图展示',
         icon: 'folder-o',
         children: [
