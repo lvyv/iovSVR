@@ -12,13 +12,10 @@ import faKey from '@fortawesome/fontawesome-free-solid/faKey'
 import faCog from '@fortawesome/fontawesome-free-solid/faCog'
 
 fontawesome.library.add(faBars, faClipboard, faDownload, faKey, faCog)
-
 fontawesome.config.searchPseudoElements = true
-
 fontawesome.dom.i2svg()
 
 require('xterm/dist/xterm.css')
-//require('./webssh.css')
 
 Terminal.applyAddon(fit)
 var iourl = 'http://192.168.85.133:8505/sshagent'

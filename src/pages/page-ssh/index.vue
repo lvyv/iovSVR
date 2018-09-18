@@ -41,7 +41,7 @@
 </template>
 <script>
 import axios from 'axios'
-import ssh from 'ssh'
+import ssh from './ssh.vue'
 
 export default {
   name: 'page-ssh',

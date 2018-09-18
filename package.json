@@ -13,7 +13,10 @@
     "doc:build": "vuepress build docs"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.47",
     "@d2-projects/d2-crud": "^1.1.0",
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "better-scroll": "^1.12.1",
@@ -41,7 +44,8 @@
     "vue-router": "^3.0.1",
     "vue-socket.io": "^2.1.1-b",
     "vue2-leaflet": "^1.0.2",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "xterm": "^3.7.0"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",
