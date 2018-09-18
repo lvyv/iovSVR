@@ -107,9 +107,9 @@
 
     .dateTimeBox {
         position: absolute;
-        top: 65px;
+        top: lefttop;
         left: 15px;
-        width: 300px;  
+        width: 228px;  
     }
      .legendBox {
         position: absolute;
@@ -166,17 +166,22 @@
 
     .time {
 
-        font-size: 3em;
+        font-size: 2em;
     }
 
     .readableTime {
         position: relative;
-        top: -5px;
+        top: 0px;
+        left: 10px;
     }
 
 
     .date {
-        font-size: 18px;
+        font-size: 1em;
+    }
+
+    .timeFactor {
+        font-size: 0.5em;
     }
 
     .passengerGlyphs .glyphicon {
@@ -286,8 +291,13 @@
     .wrappert {
         height: 100%; 
         width: 100%;
-        display: table;    
+        display: table;
     }
+
+    .wrappert:hover {
+        transition: all 0.5s linear;    
+    }
+
     .wrapper {
         height: 100%;
         vertical-align: middle;
@@ -302,6 +312,9 @@
     .jumbotron { 
         padding: 0px; /* fills out the jumbotron */
         background-color: #111;
+    }
+    .jumbotron:hover {
+        
     }
     .container .jumbotron  { 
         max-width: 100%; /* allows the jumbotron to adjust on smaller widths */

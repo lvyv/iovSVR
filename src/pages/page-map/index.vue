@@ -11,6 +11,16 @@
         </div>
         </div>
         </div>
+    <!-- 日期时间对话框 -->
+    </div>
+        <div class="dateTimeBox box">
+        <div class = "date">{{pos_time_.YMD}}</div>
+        <div class = "time"><d2-icon name="clock-o"/><span class = "readableTime">{{pos_time_.HMS}}</span></div>
+        <div>
+            <el-button size="mini" plain v-on:click="pos_time_.time_factor--"><d2-icon name="fast-backward"/><span></span> Slower</el-button>
+            <el-button size="mini" plain v-on:click="pos_time_.time_factor++">Faster <span ></span><d2-icon name="fast-forward"/> </el-button>
+        </div>
+        <div class = "timeFactor">Time Factor: <span>{{pos_time_.time_factor}}</span> minutes per second</div>
     </div>
 </d2-container>
 </template>
@@ -50,6 +60,14 @@
                     maxZoom: 18,
                     attribution: "&copy; OSM",
                 },
+                pos_time_: {
+                    time: null,
+                    time_factor: 5,
+                    timer_id: null,
+                    YMD: "",
+                    HMS: ""            
+                },
+                count_: 1
             };
         },
         mounted() {
@@ -57,7 +75,7 @@
             this.addMapLayer();
             this.addMapBtn();
             this.createAreaChart();
-
+            this.timerOn();
             // 可以采用v-on
             // $('#begin').click(function () {
             //     $('.overlay').fadeOut(250);
@@ -74,6 +92,7 @@
         beforeDestroy: function () {
         //   this.$bus.$off('add-todo', this.addTodo);
         //   this.$bus.$off('delete-todo', this.deleteTodo);
+            this.timerOff();
         },
         methods: {
             initMap() {
@@ -90,6 +109,7 @@
                     zoom: this.map_config.zoom,
                     minZoom: this.map_config.minZoom,
                     maxZoom: this.map_config.maxZoom,
+                    zoomControl: false,
                     // scrollWheelZoom: false,
                 });
                 this.map.on("zoomend", (event) => {
@@ -111,11 +131,14 @@
              },
             addMapBtn() {
                 // add rest button
-                this.reset_btn = L.easyButton('fa-location-arrow', () => {
-                    this.$bus.$emit('map-data-reset');
-                });
+                this.reset_btn = L.easyButton('fa-location-arrow', 
+                    () => {
+                        this.$bus.$emit('map-data-reset');
+                    },
+                    { position: 'topright' }
+                );
                 this.reset_btn.addTo(this.map);
-                this.reset_btn.disable();
+                // this.reset_btn.disable();
             },
             createAreaChart () {
                 var svg = d3.select(this.map.getPanes().overlayPane).append('svg'),
@@ -145,14 +168,14 @@
                 .y0(areaChartHeight)
                 .y1(function (d) { return y(d.runningFare) })
 
-                var areaChartSvg = d3.select('.areaChartBox').append('svg')
+                this.areaChartSvg = d3.select('.areaChartBox').append('svg')
                 .attr('width', areaChartWidth + margin.left + margin.right)
                 .attr('height', areaChartHeight + margin.top + margin.bottom)
                 .attr('class', 'areaChart')
                 .append('g')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
-                var markerLine = areaChartSvg.append('line')
+                var markerLine = this.areaChartSvg.append('line')
                 .attr('x1', 0)
                 .attr('y1', 0)
                 .attr('x2', 0)
@@ -164,12 +187,12 @@
                 x.domain([0, 24])
                 y.domain([0, 600])
 
-                var chartPath = areaChartSvg.append('path')
+                var chartPath = this.areaChartSvg.append('path')
                 .datum(dummyData)
                 .attr('class', 'area')
                 // .attr("d", area);
 
-                areaChartSvg.append('g')
+                this.areaChartSvg.append('g')
                 .attr('class', 'x axis')
                 .attr('transform', 'translate(0,' + areaChartHeight + ')')
                 .call(xAxis)
@@ -180,7 +203,7 @@
                 .style('text-anchor', 'end')
                 .text('Hour')
 
-                areaChartSvg.append('g')
+                this.areaChartSvg.append('g')
                 .attr('class', 'y axis')
                 .call(yAxis)
                 .append('text')
@@ -191,7 +214,7 @@
                 .text('Fares ($)')
                 // end area chart
                 // $('.box').fadeIn(250);
-            }, 
+            },
             addClusterLayer(geoJsonData) {
                 // clear pervious layer
                 if(this.markers) {
@@ -220,7 +243,6 @@
                 });
                 this.$bus.$on('map-data-update', (map_data) => {
                     this.updateMapData(map_data);
-                    
                     // enable reset button 
                     if(this.reset_btn) {
                         this.reset_btn.enable();
@@ -236,19 +258,51 @@
                     }
                 });
             },
+            /* vue component events */
+            timerOn() {
+                function updateTimes(that) {
+                    that.pos_time_.time = that.pos_time_.time.add(1, 'minutes');
+                    that.pos_time_.YMD = that.pos_time_.time.format("dddd, MMMM Do YYYY");
+                    that.pos_time_.HMS = that.pos_time_.time.format("h:mm a");
+                    that.pos_time_.timer_id = setTimeout(updateTimes, 1000 / that.pos_time_.time_factor,that);
+                };
+                console.log("timer on");
+                this.pos_time_.time = moment();
+                this.pos_time_.timer_id = setTimeout(updateTimes,1000 / this.pos_time_.time_factor, this);
+                console.log(this.pos_time_.timer_id);
+            },
+            timerOff() {
+                console.log("timer off");
+                this.pos_time_.time = null;
+                clearInterval(this.pos_time_.timer_id);
+            },
             /* event handlers */
             onStart () {
                 $('.overlay').fadeOut(250);
                 $('.box').fadeIn(250);
-            }
+                
+                // var time = moment();
+                // var timeFactor = 5;
+                // $('.timeFactor').html(timeFactor);
+                // var tweenToggle = 0;
+                // this.pos_time_.timer_id = setInterval(updateTimer, 1000 / timeFactor);
+                // function updateTimer() {
+                    // time.add(1, 'minutes');
+                    // $('.readableTime').text(time.format('h:mm a'));
+                    // $('.date').text(time.format('dddd, MMMM Do YYYY'));
+                    // timer = setTimeout(function () { updateTimer() }, (1000 / timeFactor));
+                // }          
+                // setTimeout(function () {updateTimer(); /* iterate(); */ }, 500);
+            }, 
+                       
         }
     }
 </script>
 
 <style scoped>
-@import "../../../node_modules/leaflet/dist/leaflet.css";
-@import "../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css";
-@import "./style.css";
+    @import "../../../node_modules/leaflet/dist/leaflet.css";
+    @import "../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css";
+    @import "./style.css";
     #leaflet-map {
         /*width: 100%;
         height: 450px;*/
