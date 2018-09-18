@@ -41,7 +41,7 @@
 </template>
 <script>
 import axios from 'axios'
-import ssh from 'ssh'
+var ssh = require('./ssh.js')
 
 export default {
   name: 'page-ssh',
@@ -102,8 +102,8 @@ export default {
       this.$socket.emit('dev')
     },
     go2ssh: function (row) {
-      //el table hiden.
-      //ssh component enable
+      // el table hiden.
+      // ssh component enable
       this.currentView = ssh
     },
     tryssh: function (row) {
