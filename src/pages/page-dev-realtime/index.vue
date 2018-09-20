@@ -1,290 +1,109 @@
 <template>
   <d2-container>
+    <template slot="header">
+      <el-form :inline="true" :model="sn" :rules="rules" ref="sn" size="mini" align="right" style="margin-bottom: -18px;">
+        <el-form-item label="序列号选择" prop="sn">
+          <el-select v-model="sn" placeholder="选择SN">
+            <el-option
+            v-for="item in dat"
+            :key="item.sn"
+            :value="item.sn">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit('searchData')">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </template>
+
     <el-table
     :data="dat.slice((currentPage-1)*pageSize,currentPage*pageSize)"
     style="width: 100%"
     :default-sort = "{prop: 'sn', order: 'ascending'}">
     :default
-    <el-table-column
-      prop="sn"
-      label="序列号"
-      sortable>
-    </el-table-column>
-    <el-table-column
-      prop="num"
-      label="设备自编号">
-    </el-table-column>
-    <el-table-column
-      prop="position"
-      label="安装点位">
-    </el-table-column>
+    <el-table-column width="140" prop="sn" label="序列号" sortable></el-table-column>
+    <el-table-column width="120" prop="num" label="设备自编号" sortable></el-table-column>
+    <el-table-column prop="position" label="盒子安装位置"></el-table-column>
+
     <el-table-column label="管理员" align="center">
-      <el-table-column
-        prop="name"
-        label="姓名">
-      </el-table-column>
-      <el-table-column
-        prop="phone"
-        label="电话">
-      </el-table-column>
+      <el-table-column width="50" prop="name" label="姓名"></el-table-column>
+      <el-table-column width="120" prop="phone" label="电话"></el-table-column>
     </el-table-column>
-    <el-table-column
-      prop="status"
-      label="在线状态">
-    </el-table-column>
-    <el-table-column
-      prop="time"
-      label="上传时间"
-      sortable>
-    </el-table-column>
-      <el-table-column
-      prop="address"
-      label="上传地址">
-    </el-table-column>
+
+    <el-table-column width="80" prop="status" label="在线状态" :formatter="statusFormat"></el-table-column>
+    <el-table-column prop="time" label="上传时间" sortable></el-table-column>
+    <el-table-column prop="address" label="实时位置"></el-table-column>
+
     <el-table-column label="传感器数据" align="center">
-      <el-table-column
-        prop="press"
-        label="压力值">
-      </el-table-column>
-      <el-table-column
-        prop="move"
-        label="位移量">
-      </el-table-column>
-      <el-table-column
-        prop="quake"
-        label="震动">
-      </el-table-column>
+      <el-table-column width="120" prop="sensor.sensorNum" label="传感器编号" sortable></el-table-column>
+      <el-table-column prop="sensor.sensorPos" label="传感器位置"></el-table-column>
+      <el-table-column prop="sensor.sensorType" label="传感器类型"></el-table-column>
+      <el-table-column prop="sensor.sensorData" label="传感器采集值"></el-table-column>
     </el-table-column>
-  </el-table>
-  <template slot="footer" alagn="center">
-    <el-pagination
-      background
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="pageSize"
-      layout="prev, pager, next, jumper, sizes"
-      :total="totalItem">
-    </el-pagination>
-  </template>
+    </el-table>
+
+    <template slot="footer" align="center">
+      <el-pagination
+        align="center"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="pageSize"
+        layout="prev, pager, next, jumper, sizes"
+        :total="totalItem">
+      </el-pagination>
+    </template>
   </d2-container>
 </template>
 
 <script>
+// import axios from 'axios'
 export default {
   data () {
     return {
       dat: [
         {
-          sn: 'E529A17010001',
-          num: '0000001',
-          time: '2016-05-02',
-          position: '东门大桥1号桥墩',
+          sn: 'E529A17010045',
+          num: 'T000001',
+          position: '南门大桥12号桥墩',
+          name: '老张',
+          phone: '13211001103',
           status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
+          time: '1570000000',
+          address: '南大街',
+          sensor: {
+            sensorNum: 'S0000001',
+            sensorPos: '17号桥墩',
+            sensorType: '压电传感器',
+            sensorData: 32
+          }
         },
         {
-          sn: 'E529A17010002',
-          num: '0000002',
-          time: '2016-05-04',
-          position: '东门大桥2号桥墩',
+          sn: 'E529A17010045',
+          num: 'T000001',
+          position: '南门大桥12号桥墩',
+          name: '老张',
+          phone: '13211001103',
           status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010003',
-          num: '0000003',
-          time: '2016-05-01',
-          position: '东门大桥3号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010004',
-          num: '0000004',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010005',
-          num: '0000005',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010006',
-          num: '0000006',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010007',
-          num: '0000007',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010008',
-          num: '0000008',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010009',
-          num: '0000009',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010010',
-          num: '0000010',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010011',
-          num: '0000011',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010012',
-          num: '0000012',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010013',
-          num: '0000013',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010014',
-          num: '0000014',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010015',
-          num: '0000015',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
-        },
-        {
-          sn: 'E529A17010016',
-          num: '0000016',
-          time: '2016-05-03',
-          position: '东门大桥4号桥墩',
-          status: 0,
-          address: '成都市东门大街12',
-          press: '12Mpa',
-          move: 0.1,
-          quake: 1,
-          name: '张三',
-          phone: '13332112345'
+          time: '1570000000',
+          address: '南大街',
+          sensor: {
+            sensorNum: 'S0000002',
+            sensorPos: '17号桥墩',
+            sensorType: '压电传感器',
+            sensorData: 32
+          }
         }
       ],
+      sn: [ ],
+      rules: {
+        sn: [
+          { required: true, message: '请选择SN号', trigger: 'blur' }
+        ]
+      },
       totalItem: 0,
       pageSize: 10,
       currentPage: 1
@@ -292,6 +111,7 @@ export default {
   },
   created: function () {
     this.initPage()
+    // this.initData()
   },
   methods: {
     handleSizeChange (pSize) {
@@ -305,7 +125,52 @@ export default {
     initPage: function () {
       this.totalItem = this.dat.length
       // alert('总条数：' + this.totalItem)
+    },
+    statusFormat (row, column) {
+      if (row.status === 0) {
+        return '离线'
+      } else {
+        return '在线'
+      }
+    },
+    onSubmit (sn) {
+      this.$refs[sn].validate((valid) => {
+        if (valid) {
+          alert(this.sn)
+        } else {
+          return false
+        }
+      })
     }
+    // ,
+    // initData: function () {
+    //   axios.get('/api/devInfo').then((res) => {
+    //     if (Array.isArray(this.dat)) {
+    //       this.dat.splice(0, this.dat.length)
+    //     }
+    //     var data = res.data
+    //     alert(data[0].sn)
+    //     for (var i in data) {
+    //       var tabledata = {
+    //         'sn': data[i].sn,
+    //         'num': data[i].num,
+    //         'time': data[i].time,
+    //         'position': data[i].position,
+    //         'status': data[i].status,
+    //         'address': data[i].address,
+    //         'sensor': {
+    //           'sensorNum': data[i].sensor.sensorNum,
+    //           'sensorPos': data[i].sensor.sensorPos,
+    //           'sensorType': data[i].sensor.sensorType,
+    //           'sensorData': data[i].sensor.sensorData
+    //         },
+    //         'name': data[i].name,
+    //         'phone': data[i].phone
+    //       }
+    //       this.dat.push(tabledata)
+    //     }
+    //   })
+    // }
   }
 }
 </script>
