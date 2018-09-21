@@ -11,7 +11,7 @@ import '@/mock'
 import i18n from './i18n'
 // 核心插件
 import d2Admin from '@/plugin/d2admin'
-
+import VCharts from 'v-charts'
 // [ 可选插件组件 ]D2-Crud
 import D2Crud from '@d2-projects/d2-crud'
 // 菜单和路由设置
@@ -38,6 +38,7 @@ Vue.use(eventBus)
 
 // 可选插件组件
 Vue.use(D2Crud)
+Vue.use(VCharts)
 new Vue({
   el: '#app',
   render: h => h(App),
