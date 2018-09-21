@@ -51,7 +51,7 @@
             <span size="mini">序列号:</span>
             <span size="mini" style="color:#FF0000"> {{ searchData.sn }} </span>
             <span size="mini">传感器编号:</span>
-            <span size="mini" style="color:#FF0000"> {{ num }} </span>
+            <span size="mini" style="color:#FF0000"> {{ curNum }} </span>
             <span size="mini">时间：</span>
             <span size="mini" style="color:#FF0000"> {{ searchData.startDateTime }} </span>
             <span size="mini">至</span>
@@ -87,7 +87,7 @@
             <span size="mini">序列号:</span>
             <span size="mini" style="color:#FF0000"> {{ searchData.sn }} </span>
             <span size="mini">传感器编号:</span>
-            <span size="mini" style="color:#FF0000"> {{ num }} </span>
+            <span size="mini" style="color:#FF0000"> {{ curNum }} </span>
             <span size="mini">时间：</span>
             <span size="mini" style="color:#FF0000"> {{ searchData.startDateTime }} </span>
             <span size="mini">至</span>
