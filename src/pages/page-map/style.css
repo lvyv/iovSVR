@@ -314,7 +314,7 @@
         background-color: #111;
     }
     .jumbotron:hover {
-        
+        cursor: pointer;
     }
     .container .jumbotron  { 
         max-width: 100%; /* allows the jumbotron to adjust on smaller widths */
