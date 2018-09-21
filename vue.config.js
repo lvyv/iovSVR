@@ -23,8 +23,9 @@ function resolve (dir) {
 }
 
 // 基础路径 注意发布之前要先修改这里
-const staticUrl = path.resolve(__dirname, './public') 
 const baseUrl = '/'
+const staticUrl = resolve(__dirname, './public') 
+
 const productionSourceMap = false
 const pathsToClean = [
   staticUrl,
@@ -128,32 +129,10 @@ module.exports = {
         parallel: true
       }),
   
-     /*
-     new HtmlWebpackPlugin({
-        filename: 'webssh.html',
-        template: './static/webssh.htm',
-        inject: true,
-        chunks: ['manifest', 'vendor','webssh']
-      }),*/
       // keep module.id stable when vendor modules does not change
       new webpack.HashedModuleIdsPlugin(),
       // enable scope hoisting
       new webpack.optimize.ModuleConcatenationPlugin(),
-  
-      // split vendor js into its own file
-      /*new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        minChunks (module) {
-          // any required modules inside node_modules are extracted to vendor
-          return (
-            module.resource &&
-            /\.js$/.test(module.resource) &&
-            module.resource.indexOf(
-              path.join(__dirname, './node_modules')
-            ) === 0
-          )
-        }
-      })*/
     ]
   }
 }
