@@ -3,7 +3,7 @@ Internet of vehicle platform template, rapid development &amp; deployment &amp; 
 
 ## 快速入门 ##
 
-一、window系统安装指南
+一、window/Linux系统安装指南
 
 1. 下载和安装nodejs（8.11.4），git工具（TortoiseGit）
 2. npm install -g nrm
@@ -12,3 +12,8 @@ Internet of vehicle platform template, rapid development &amp; deployment &amp; 
 5. cd iovSVR
 6. npm i
 7. npm start
+
+二、系统概览图
+
+![](https://github.com/lvyv/iovSVR/blob/master/doc/architecture.png)
+
