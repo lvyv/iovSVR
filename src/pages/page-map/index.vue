@@ -295,11 +295,62 @@ export default {
 
             transition(svg.selectAll("path.trip0"));
 
+        // function tweenDash(path_node) {
+        //     var l = path_node.getTotalLength(),
+        //     i = d3.interpolateString("0," + l, l + "," + l);
+        //     return function (t) {
+        //          return i(t); 
+        //     };
+            // var l = path_node.getTotalLength();
+            // var i = d3.interpolateString("0," + l, l + "," + l); // interpolation of stroke-dasharray style attr
+            // return function (t) {
+                // var marker = d3.select("#marker");
+                // var p = path_node.getPointAtLength(t * l);
+                // marker.attr("transform", "translate(" + p.x + "," + p.y + ")");//move marker
+                // if (tweenToggle == 0) {
+                //     tweenToggle = 1;
+                //     var newCenter = map.layerPointToLatLng(new L.Point(p.x, p.y));
+                //     map.panTo(newCenter, 14);
+                // } else {
+                //     tweenToggle = 0;
+                // }
+                //update chart data every X frames
+                // if (chartInterval == 5) {
+                //     chartInterval = 0;
+                //     var decimalHour = parseInt(time.format('H')) + parseFloat(time.format('m') / 60)
+                //     if (isNaN(d.properties.fare)) {
+                //         d.properties.fare = 0;
+                //     }
+                //     var incrementalFare = d.properties.fare * t;
+                //     dummyData.push({
+                //         "time": decimalHour,
+                //         "runningFare": running.fare + parseFloat(incrementalFare)
+                //     });
+                //     chartPath.attr("d", area); //redraw area chart
+                //     if (d.properties.hasfare == false) { //draw purple area for nonfare time
+                //         emptyData.push({
+                //             "time": decimalHour,
+                //             "runningFare": running.fare + parseFloat(incrementalFare)
+                //         });
+                //         emptyPath.attr("d", area);
+                //     }
+                //     markerLine
+                //         .attr('x1', x(decimalHour))
+                //         .attr('x2', x(decimalHour));
+                // } else {
+                //     chartInterval++;
+                // }
+                // return i(t);
+            // }
             function tweenDash() {
-              var l = this.getTotalLength(),
-                i = d3.interpolateString("0," + l, l + "," + l);
+              var ll = this.getTotalLength(),
+                ii = d3.interpolateString("0," + ll, ll + "," + l);
+              var it = this;
               return function(t) {
-                return i(t);
+                var p = it.getPointAtLength(t * l);
+                var newCenter = that.map.layerPointToLatLng(new L.Point(p.x, p.y));
+                that.map.panTo(newCenter, 14);
+                return ii(t);
               };
             }
             function transition(selection) {
