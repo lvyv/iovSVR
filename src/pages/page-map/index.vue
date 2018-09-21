@@ -17,10 +17,10 @@
         <div class = "date">{{pos_time_.YMD}}</div>
         <div class = "time"><d2-icon name="clock-o"/><span class = "readableTime">{{pos_time_.HMS}}</span></div>
         <div>
-            <el-button size="mini" plain v-on:click="pos_time_.time_factor--"><d2-icon name="fast-backward"/><span></span> Slower</el-button>
-            <el-button size="mini" plain v-on:click="pos_time_.time_factor++">Faster <span ></span><d2-icon name="fast-forward"/> </el-button>
+            <el-button size="mini" plain v-on:click="pos_time_.time_factor--"><d2-icon name="fast-backward"/><span></span> 减慢</el-button>
+            <el-button size="mini" plain v-on:click="pos_time_.time_factor++">加快 <span ></span><d2-icon name="fast-forward"/> </el-button>
         </div>
-        <div class = "timeFactor">Time Factor: <span>{{pos_time_.time_factor}}</span> minutes per second</div>
+        <div class = "timeFactor">时间尺度: <span>{{pos_time_.time_factor}}</span> 分钟/每秒 </div>
     </div>
 </d2-container>
 </template>
@@ -36,14 +36,6 @@ import * as moment from "moment";
 import "moment/locale/zh-cn";
 
 moment.locale("zh-cn");
-// console.log(moment.locale());
-
-// import mapProvider from '../utilities/leaflet.MapProviders.js'
-// import easyButton from '../utilities/leaflet.EasyButton.vue'
-// const MAP_IMAGE_PATH = "//cdn.bootcss.com/leaflet/1.0.0-rc.2/images/";
-
-//const MAP_IMAGE_PATH = "../../assets/leaflet/";
-
 export default {
   props: ["mapData"],
   data() {
@@ -53,6 +45,7 @@ export default {
       geoJsonLayer: null,
       init_map_data: null,
       reset_btn: null,
+      // areaChartSvg: null,
       map_config: {
         zoom: 14,
         center: [40.7127, -74.0059],
@@ -77,7 +70,7 @@ export default {
     this.initMap();
     this.addMapBtn();
     this.createAreaChart();
-    this.loadTrajectories();
+    // this.loadTrajectories();
     this.timerOn();
     // this.initListenMsg();
   },
@@ -112,11 +105,11 @@ export default {
         zoomControl: false
         // scrollWheelZoom: false,
       });
-      this.map.on("zoomend", event => {
-        if (this.reset_btn && this.map.getZoom() !== this.map_config.zoom) {
-          this.reset_btn.enable();
-        }
-      });
+      // this.map.on("zoomend", event => {
+      //   if (this.reset_btn && this.map.getZoom() !== this.map_config.zoom) {
+      //     this.reset_btn.enable();
+      //   }
+      // });
       // Creating a marker
       var marker = L.marker(this.map_config.center);
       // Adding marker to the map
@@ -139,12 +132,12 @@ export default {
       this.reset_btn = L.easyButton(
         "fa-location-arrow",
         () => {
+          console.log("reset_btn emit a map-data-reset message!");
           this.$bus.$emit("map-data-reset");
         },
         { position: "topright" }
       );
       this.reset_btn.addTo(this.map);
-      // this.reset_btn.disable();
     },
     createAreaChart() {
       var svg = this.map_svg_;
@@ -174,7 +167,7 @@ export default {
           return y(d.runningFare);
         });
 
-      this.areaChartSvg = d3
+      var areaChartSvg = d3
         .select(".areaChartBox")
         .append("svg")
         .attr("width", areaChartWidth + margin.left + margin.right)
@@ -183,7 +176,7 @@ export default {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var markerLine = this.areaChartSvg
+      var markerLine = areaChartSvg
         .append("line")
         .attr("x1", 0)
         .attr("y1", 0)
@@ -196,13 +189,13 @@ export default {
       x.domain([0, 24]);
       y.domain([0, 600]);
 
-      var chartPath = this.areaChartSvg
+      var chartPath = areaChartSvg
         .append("path")
         .datum(dummyData)
         .attr("class", "area");
       // .attr("d", area);
 
-      this.areaChartSvg
+      areaChartSvg
         .append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + areaChartHeight + ")")
@@ -212,9 +205,9 @@ export default {
         .attr("x", 39)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Hour");
+        .text("小时");
 
-      this.areaChartSvg
+      areaChartSvg
         .append("g")
         .attr("class", "y axis")
         .call(yAxis)
@@ -223,185 +216,8 @@ export default {
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Fares ($)");
+        .text("油 耗 (￥)");
       // end area chart
-      // $('.box').fadeIn(250);
-    },
-    loadTrajectories() {
-      //get a random number between 0 and 11
-      var that = this;
-      var transform = d3.geoTransform({
-          point: projectPoint
-        }),
-        d3path = d3.geoPath().projection(transform);
-      // Use Leaflet to implement a D3 geometric transformation.
-      function projectPoint(x, y) {
-        var point = that.map.latLngToLayerPoint(new L.LatLng(y, x));
-        this.stream.point(point.x, point.y);
-      }
-      var number = Math.floor(Math.random() * 15);
-      number = 0;
-      d3.json("http://192.168.1.216:8080/data/taxiday" + number + ".geojson")
-        .then(function(data) {
-          var svg = that.map_svg_;
-          var g = that.map_svg_g_;
-          var feature = g
-            .selectAll("path")
-            .data(data.features)
-            .enter()
-            .append("path")
-            .attr("class", function(d) {
-              if (d.properties.hasfare == true) {
-                return (
-                  "trip" + d.properties.key * 2 + " " + d.properties.hasfare
-                );
-              } else {
-                return (
-                  "trip" +
-                  (d.properties.key * 2 + 1) +
-                  " " +
-                  d.properties.hasfare
-                );
-              }
-            })
-            .attr("style", "opacity:0");
-
-          // var pointsArray = [];
-          // var points = g.selectAll(".point").data(pointsArray);
-          // var marker = g.append("circle");
-          // marker.attr("r", 5).attr("id", "marker");
-          //.attr("transform", "translate(" + startPoint + ")");
-
-          //Get path start point for placing marker
-          //var string = JSON.stringify(j);
-          that.map.on("viewreset", reset);
-          that.map.on("zoomend", reset);
-          reset();
-
-          var i = 0;
-          iterate();
-          // setTimeout(function() {
-          //   iterate();
-          // }, 500);
-          function iterate() {
-            var chartInterval = 0;
-
-            var emptyData = [];
-
-            var emptyPath = areaChartSvg
-              .append("path")
-              .datum(emptyData)
-              .attr("class", "empty");
-
-            transition(svg.selectAll("path.trip0"));
-
-        // function tweenDash(path_node) {
-        //     var l = path_node.getTotalLength(),
-        //     i = d3.interpolateString("0," + l, l + "," + l);
-        //     return function (t) {
-        //          return i(t); 
-        //     };
-            // var l = path_node.getTotalLength();
-            // var i = d3.interpolateString("0," + l, l + "," + l); // interpolation of stroke-dasharray style attr
-            // return function (t) {
-                // var marker = d3.select("#marker");
-                // var p = path_node.getPointAtLength(t * l);
-                // marker.attr("transform", "translate(" + p.x + "," + p.y + ")");//move marker
-                // if (tweenToggle == 0) {
-                //     tweenToggle = 1;
-                //     var newCenter = map.layerPointToLatLng(new L.Point(p.x, p.y));
-                //     map.panTo(newCenter, 14);
-                // } else {
-                //     tweenToggle = 0;
-                // }
-                //update chart data every X frames
-                // if (chartInterval == 5) {
-                //     chartInterval = 0;
-                //     var decimalHour = parseInt(time.format('H')) + parseFloat(time.format('m') / 60)
-                //     if (isNaN(d.properties.fare)) {
-                //         d.properties.fare = 0;
-                //     }
-                //     var incrementalFare = d.properties.fare * t;
-                //     dummyData.push({
-                //         "time": decimalHour,
-                //         "runningFare": running.fare + parseFloat(incrementalFare)
-                //     });
-                //     chartPath.attr("d", area); //redraw area chart
-                //     if (d.properties.hasfare == false) { //draw purple area for nonfare time
-                //         emptyData.push({
-                //             "time": decimalHour,
-                //             "runningFare": running.fare + parseFloat(incrementalFare)
-                //         });
-                //         emptyPath.attr("d", area);
-                //     }
-                //     markerLine
-                //         .attr('x1', x(decimalHour))
-                //         .attr('x2', x(decimalHour));
-                // } else {
-                //     chartInterval++;
-                // }
-                // return i(t);
-            // }
-            function tweenDash() {
-              var ll = this.getTotalLength(),
-                ii = d3.interpolateString("0," + ll, ll + "," + l);
-              var it = this;
-              return function(t) {
-                var p = it.getPointAtLength(t * l);
-                var newCenter = that.map.layerPointToLatLng(new L.Point(p.x, p.y));
-                that.map.panTo(newCenter, 14);
-                return ii(t);
-              };
-            }
-            function transition(selection) {
-              selection.each(function() {
-                d3.select(this)
-                  .attr("style", "opacity:.7")
-                  .transition()
-                  .duration(2000)
-                  .attrTween("stroke-dasharray", tweenDash);
-              });
-            }
-          }
-
-          // Reposition the SVG to cover the features.
-          function reset() {
-            var bounds = d3path.bounds(data);
-            (that.topLeft_ = bounds[0]), (that.bottomRight_ = bounds[1]);
-
-            svg
-              .attr("width", that.bottomRight_[0] - that.topLeft_[0] + 100)
-              .attr("height", that.bottomRight_[1] - that.topLeft_[1] + 100)
-              .style("left", that.topLeft_[0] - 50 + "px")
-              .style("top", that.topLeft_[1] - 50 + "px");
-
-            g.attr(
-              "transform",
-              "translate(" +
-                (-that.bottomRight_[0] + 50) +
-                "," +
-                (-that.bottomRight_[1] + 50) +
-                ")"
-            );
-
-            feature.attr("d", d3path);
-
-            //TODO: Figure out why this doesn't work as points.attr...
-            g.selectAll(".point").attr("transform", function(d) {
-              return translatePoint(d);
-            });
-          }
-          function translatePoint(d) {
-            var point = map.latLngToLayerPoint(new L.LatLng(d[1], d[0]));
-
-            return "translate(" + point.x + "," + point.y + ")";
-          }
-
-          function coordToLatLon(coord) {
-            var point = map.layerPointToLatLng(new L.Point(coord[0], coord[1]));
-            return point;
-          }
-        });
     },
     addClusterLayer(geoJsonData) {
       // clear pervious layer
@@ -446,6 +262,101 @@ export default {
         }
       });
     },
+    playGpsTrajectory(index) {
+      var map = this.map;
+      var topLeft, bottomRight;
+      function projectPoint(x, y) {
+        var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+        this.stream.point(point.x, point.y);
+      }
+      var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+        g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+      var transform = d3.geoTransform({
+          point: projectPoint
+        }),
+        d3path = d3.geoPath().projection(transform);
+
+      //get a random number between 0 and 11
+      // var number = Math.floor(Math.random() * 15);
+      // number = 0; 
+      d3.json("data/taxiday" + index + ".geojson").then(function(data) {
+        function iterate() {
+          transition(svg.selectAll("path.trip0"));
+          function tweenDash() {
+            var ll = this.getTotalLength();
+            var ii = d3.interpolateString("0," + ll, ll + "," + ll);
+            var it = this;
+            return function(t) {
+              var p = it.getPointAtLength(t * ll);
+              var newCenter = map.layerPointToLatLng(new L.Point(p.x, p.y));
+              map.panTo(newCenter, 14);
+              return ii(t);
+            };
+          }
+          function transition(selection) {
+            console.log("transition begin!", selection.length);
+            selection.each(function() {
+              d3
+                .select(this)
+                .attr("style", "opacity:.7")
+                .transition()
+                .duration(2000)
+                .attrTween("stroke-dasharray", tweenDash);
+            });
+          }
+        }
+        // Reposition the SVG to cover the features.
+        function reset() {
+          var bounds = d3path.bounds(data);
+          (topLeft = bounds[0]), (bottomRight = bounds[1]);
+
+          svg
+            .attr("width", bottomRight[0] - topLeft[0] + 100)
+            .attr("height", bottomRight[1] - topLeft[1] + 100)
+            .style("left", topLeft[0] - 50 + "px")
+            .style("top", topLeft[1] - 50 + "px");
+
+          g.attr(
+            "transform",
+            "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")"
+          );
+
+          feature.attr("d", d3path);
+
+          //TODO: Figure out why this doesn't work as points.attr...
+          g.selectAll(".point").attr("transform", function(d) {
+            return translatePoint(d);
+          });
+        }
+
+        function translatePoint(d) {
+          var point = map.latLngToLayerPoint(new L.LatLng(d[1], d[0]));
+          return "translate(" + point.x + "," + point.y + ")";
+        }
+
+        var feature = g
+          .selectAll("path")
+          .data(data.features)
+          .enter()
+          .append("path")
+          .attr("class", function(d) {
+            if (d.properties.hasfare == true) {
+              return "trip" + d.properties.key * 2 + " " + d.properties.hasfare;
+            } else {
+              return (
+                "trip" + (d.properties.key * 2 + 1) + " " + d.properties.hasfare
+              );
+            }
+          })
+          .attr("style", "opacity:0");
+
+        map.on("viewreset", reset);
+        map.on("zoomend", reset);
+        reset();
+        iterate();
+      });
+    },
     /* vue component events */
     timerOn() {
       function updateTimes(that) {
@@ -475,19 +386,7 @@ export default {
     onStart() {
       $(".overlay").fadeOut(250);
       $(".box").fadeIn(250);
-
-      // var time = moment();
-      // var timeFactor = 5;
-      // $('.timeFactor').html(timeFactor);
-      // var tweenToggle = 0;
-      // this.pos_time_.timer_id = setInterval(updateTimer, 1000 / timeFactor);
-      // function updateTimer() {
-      // time.add(1, 'minutes');
-      // $('.readableTime').text(time.format('h:mm a'));
-      // $('.date').text(time.format('dddd, MMMM Do YYYY'));
-      // timer = setTimeout(function () { updateTimer() }, (1000 / timeFactor));
-      // }
-      // setTimeout(function () {updateTimer(); /* iterate(); */ }, 500);
+      this.playGpsTrajectory(1);
     }
   }
 };
