@@ -1,18 +1,18 @@
 <template>
  <div class="box" id='webssh'>
-    <style>
+    <!-- <style>
     body {background-color: #000;height: 100%;margin: 0;}.dropup-content {display: none;}
-    </style>
-    <link rel="stylesheet" href="/webssh.css" />
+    </style> -->
+    <!-- <link rel="stylesheet" href="/webssh.css" /> -->
     <div id="header"></div>
     <div id="terminal-container" class="terminal"></div>
     <div id="bottomdiv">
       <div class="dropup" id="menu">
         <i class="fas fa-bars fa-fw"></i> Menu
         <div class="dropup-content">
-          <a id="logBtn" style="color:#000" @click="togglelog()"><i class="fas fa-clipboard fa-fw"></i> Start Log</a>
-          <a id="downloadLogBtn" style="color:#000" @click="downloadLog()"><i class="fas fa-download fa-fw"></i> Download Log</a>
-          <a id="credentialsBtn" style="color:#000" @click="replayCredentials()"><i class="fas fa-key fa-fw"></i> Credentials</a>
+          <a id="logBtn" class="btn-color" @click="togglelog()"><i class="fas fa-clipboard fa-fw"></i> Start Log</a>
+          <a id="downloadLogBtn" class="btn-color" @click="downloadLog()"><i class="fas fa-download fa-fw"></i> Download Log</a>
+          <a id="credentialsBtn" class="btn-color" @click="replayCredentials()"><i class="fas fa-key fa-fw"></i> Credentials</a>
         </div>
       </div>
       <div id="footer"></div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import * as Terminal from 'xterm/dist/xterm'
 import * as fit from 'xterm/dist/addons/fit/fit'
 import fontawesome from '@fortawesome/fontawesome'
@@ -226,3 +227,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+@import "./webssh.css";
+.btn-color {
+  color:#000;
+}
+</style>
