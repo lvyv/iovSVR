@@ -46,13 +46,13 @@ const frameIn = [
         path: '/page-map',
         name: 'page-map',
         component: () => import('@/pages/page-map'),
-        meta: { meta, title: '实时轨迹' }
+        meta: { meta, title: '历史轨迹' }
       },
       {
         path: '/page-leaflet',
         name: 'page-leaflet',
         component: () => import('@/pages/page-leaflet'),
-        meta: { meta, title: '历史轨迹' }
+        meta: { meta, title: '实时轨迹' }
       }
     ]
   }

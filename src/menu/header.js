@@ -16,8 +16,8 @@ export default [
       { title: '地图展示',
         icon: 'folder-o',
         children: [
-          { path: '/page-leaflet', title: '历史轨迹' },
-          { path: '/page-map', title: '实时轨迹' }
+          { path: '/page-leaflet', title: '实时轨迹' },
+          { path: '/page-map', title: '历史轨迹' }
         ]
       },
       { path: '/page-ssh', title: 'WEB SSH' }

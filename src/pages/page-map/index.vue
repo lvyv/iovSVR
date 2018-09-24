@@ -3,17 +3,21 @@
     <div id="leaflet-map"></div>
     <div class="areaChartBox box"></div>
     <!-- 首页对话框 -->
-    <div class="wrappert">
-        <div class="wrapper">
-        <div class="container overlay">
-        <div class="jumbotron" id="begin" v-on:click="onStart">
-            <h1>开始</h1>
-        </div>
-        </div>
-        </div>
+    <!-- <div class="wrappert"> -->
+        <!-- <div class="wrapper"> -->
+          <div class="container overlay" id="startupBox">
+          <!--class="jumbotron" id="grid-template" v-on:click="onStart"-->
+          <canlendar
+            :data="gridData"
+            :columns="gridColumns"
+            :filter-key="searchQuery"
+            @trajactory-startup="onStart">
+          </canlendar>
+          </div>
+        <!-- </div> -->
+    <!-- </div> -->
     <!-- 日期时间对话框 -->
-    </div>
-        <div class="dateTimeBox box">
+    <div class="dateTimeBox box">
         <div class = "date">{{pos_time_.YMD}}</div>
         <div class = "time"><d2-icon name="clock-o"/><span class = "readableTime">{{pos_time_.HMS}}</span></div>
         <div>
@@ -34,6 +38,7 @@ import $ from "jquery";
 import * as d3 from "d3";
 import * as moment from "moment";
 import "moment/locale/zh-cn";
+import canlendar from "@/components/controls/canlendar-heatmap.vue"
 
 moment.locale("zh-cn");
 export default {
@@ -63,8 +68,20 @@ export default {
       map_svg_: null,
       map_svg_g_: null,
       topLeft_: null,
-      bottomRight_: null
+      bottomRight_: null,
+
+      searchQuery: '',
+      gridColumns: ['car', 'data'],
+      gridData: [
+        { car: 'NYC3L94A', data: 'taxiday0' },
+        { car: 'NYC4L85C', data: 'taxiday1' },
+        { car: 'NYC3M96B', data: 'taxiday5' },
+        { car: 'NYC6L27P', data: 'taxiday4' }
+      ]
     };
+  },
+  components: {
+    canlendar:canlendar
   },
   mounted() {
     this.initMap();
@@ -280,7 +297,7 @@ export default {
       //get a random number between 0 and 11
       // var number = Math.floor(Math.random() * 15);
       // number = 0; 
-      d3.json("data/taxiday" + index + ".geojson").then(function(data) {
+      d3.json("data/" + index + ".geojson").then(function(data) {
         function iterate() {
           transition(svg.selectAll("path.trip0"));
           function tweenDash() {
@@ -295,7 +312,7 @@ export default {
             };
           }
           function transition(selection) {
-            console.log("transition begin!", selection.length);
+            // console.log("transition begin!", selection.length);
             selection.each(function() {
               d3
                 .select(this)
@@ -383,10 +400,11 @@ export default {
       clearInterval(this.pos_time_.timer_id);
     },
     /* event handlers */
-    onStart() {
+    onStart(opt) {
       $(".overlay").fadeOut(250);
       $(".box").fadeIn(250);
-      this.playGpsTrajectory(1);
+      console.log(opt.data);
+      this.playGpsTrajectory(opt.data);
     }
   }
 };
@@ -420,6 +438,9 @@ export default {
 #leaflet-map .easy-button-button .fa {
   vertical-align: 0;
   font-size: 1.5em;
+}
+#startupBox {
+  top:100px;
 }
 @media (max-width: 768px) {
   #leaflet-map {
