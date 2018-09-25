@@ -1,9 +1,6 @@
 <template>
  <div class="box" id='webssh'>
-    <!-- <style>
-    body {background-color: #000;height: 100%;margin: 0;}.dropup-content {display: none;}
-    </style> -->
-    <!-- <link rel="stylesheet" href="/webssh.css" /> -->
+    <link rel="stylesheet" href="/webssh.css" />
     <div id="header"></div>
     <div id="terminal-container" class="terminal"></div>
     <div id="bottomdiv">
@@ -228,7 +225,7 @@ export default {
 }
 </script>
 <style scoped>
-@import "./webssh.css";
+body {background-color: #000;height: 100%;margin: 0;}.dropup-content {display: none;}
 .btn-color {
   color:#000;
 }

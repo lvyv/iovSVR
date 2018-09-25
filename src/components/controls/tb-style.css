@@ -1,0 +1,124 @@
+.scrollTable {
+	font-family: Helvetica Neue, Arial, sans-serif;
+	font-size: 12px;
+	border: 1px solid #000000;
+	border-radius: 2px;
+	background-color: #fff;
+	width:360px;
+	color: #444;
+  }
+  
+.scrollTable th {
+	background-color: #444;
+	color: rgba(255,255,255,0.66);
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+  }
+  
+.scrollTable  td {
+	background-color: #f9f9f9;
+  }
+  
+.scrollTable  th, td {
+	min-width: 120px;
+	padding: 1px 2px;
+	text-align:center;
+  }
+  
+.scrollTable  th.active {
+	color: #fff;
+  }
+  
+.scrollTable  th.active .arrow {
+	opacity: 1;
+  }
+  
+.scrollTable  .arrow {
+	display: inline-block;
+	vertical-align: middle;
+	width: 0;
+	height: 0;
+	margin-left: 5px;
+	opacity: 0.66;
+  }
+  
+.scrollTable  .arrow.asc {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-bottom: 4px solid #fff;
+  }
+  
+.scrollTable .arrow.dsc {
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 4px solid #fff;
+  }
+  
+/* define height and width of scrollable area. Add 16px to width for scrollbar          */
+#tableContainer {
+	clear: both;
+	/* border: 1px solid #963; */
+	height: 285px;
+	overflow: auto;
+	width: 300x;
+	transform: translateY(10%);
+}
+
+/* Reset overflow value to hidden for all non-IE browsers. */
+#tableContainer {
+	overflow: hidden;
+	/* width: 900px; */
+}
+
+/* define width of table. IE browsers only                 */
+#tableContainer table {
+	float: left;
+}
+
+/* set table header to a fixed position. WinIE 6.x only                                       */
+/* In WinIE 6.x, any element with a position property set to relative and is a child of       */
+/* an element that has an overflow property set, the relative value translates into fixed.    */
+/* Ex: parent element DIV with a class of tableContainer has an overflow property set to auto */
+
+.scrollTable thead.fixedHeader tr {
+	position: relative;
+}
+
+/* set THEAD element to have block level attributes. All other non-IE browsers            */
+/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
+
+.scrollTable tbody.scrollContent {
+	display: block;
+	height: 262px;
+	overflow: auto;
+	width: 380px;
+}
+
+.scrollTable thead.fixedHeader {
+	display: table;
+	overflow: auto;
+	width: 380px;
+}
+
+/* make TD elements pretty. Provide alternating classes for striping the table */
+/* http://www.alistapart.com/articles/zebratables/                             */
+.scrollTable tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+	background: #FFF;
+	border-bottom: none;
+	border-left: none;
+	/* border-right: 1px solid #CCC;
+	border-top: 1px solid #DDD;
+	padding: 2px 3px 3px 4px */
+}
+
+.scrollTable tbody.scrollContent tr.alternateRow td {
+	background: #EEE;
+	border-bottom: none;
+	border-left: none;
+	/* border-right: 1px solid #CCC;
+	border-top: 1px solid #DDD;
+	padding: 2px 3px 3px 4px */
+}

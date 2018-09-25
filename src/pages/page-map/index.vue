@@ -7,10 +7,12 @@
         <!-- <div class="wrapper"> -->
           <div class="container overlay" id="startupBox">
           <!--class="jumbotron" id="grid-template" v-on:click="onStart"-->
-          <canlendar
-            :data="gridData"
+          <!-- <canlendar
+            :trips="gridData"
             :columns="gridColumns"
-            :filter-key="searchQuery"
+            :filter-key="searchQuery" -->
+          <canlendar
+            :columns="gridColumns"
             @trajactory-startup="onStart">
           </canlendar>
           </div>
@@ -73,10 +75,6 @@ export default {
       searchQuery: '',
       gridColumns: ['car', 'data'],
       gridData: [
-        { car: 'NYC3L94A', data: 'taxiday0' },
-        { car: 'NYC4L85C', data: 'taxiday1' },
-        { car: 'NYC3M96B', data: 'taxiday5' },
-        { car: 'NYC6L27P', data: 'taxiday4' }
       ]
     };
   },
