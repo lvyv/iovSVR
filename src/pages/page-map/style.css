@@ -1,4 +1,4 @@
- html,
+ /* html,
     body {
         height: 100%;
         width: 100%;
@@ -6,7 +6,7 @@
     body {
         margin: 0;
         color:#fff;
-    }
+    } */
     #map {
 
         top: 50px;
@@ -110,6 +110,8 @@
         top: lefttop;
         left: 15px;
         width: 228px;  
+        margin: 0;
+        color:#fff;
     }
      .legendBox {
         position: absolute;
@@ -327,3 +329,31 @@
         font-weight: 600;
         text-transform: uppercase;
     }
+    #leaflet-map {
+        /*width: 100%;
+              height: 450px;*/
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        position: absolute;
+        width: auto;
+        height: auto;
+        z-index: 0;
+      }
+      /* icon style */
+      #leaflet-map .easy-button-button {
+        border: none;
+        border-radius: 2px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        background-color: rgb(255, 255, 255);
+      }
+      #leaflet-map .easy-button-button .fa {
+        vertical-align: 0;
+        font-size: 1.5em;
+      }
+      #startupBox {
+        top:100px;
+      }

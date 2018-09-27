@@ -1,9 +1,28 @@
-const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const Sequelize = require('sequelize')
 const epilogue = require('epilogue')
 
+let app = require('express')()
+let httpSvr = require('http').Server(app)
+let io = require('socket.io')(httpSvr)
+
+function answerCli (sock) {
+  console.log('emit mapagent_title msg')
+  sock.emit('mapagent_title', 'ABCDEFG@@@')
+  setTimeout(function () {
+    answerCli(sock)
+  }, 1000)
+}
+io.on('connection', function (socket) {
+  console.log('a user connected')
+  setTimeout(function () {
+    answerCli(socket)
+  }, 1000)
+  socket.on('backend.map', function (data) {
+    console.log('data received from client', data)
+  })
+})
 // const OktaJwtVerifier = require('@okta/jwt-verifier')
 
 // const oktaJwtVerifier = new OktaJwtVerifier({
@@ -11,7 +30,6 @@ const epilogue = require('epilogue')
 //   issuer: 'https://dev-267981.oktapreview.com/oauth2/default'
 // })
 
-let app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -41,6 +59,7 @@ app.use((req, res, next) => {
 let database = new Sequelize({
   dialect: 'sqlite',
   storage: './test.sqlite'
+  // operatorsAliases: false
 })
 
 // Define our Trip model
@@ -60,18 +79,18 @@ epilogue.initialize({
 // let userResource = epilogue.resource({
 epilogue.resource({
   model: Trip,
-  endpoints: ['/trips', '/trips/:id'],
-  search: {
-    operator: '$gt',
-    attributes: [ 'id' ]
-  }
+  endpoints: ['/trips', '/trips/:id']
+  // search: {
+  //   operator: '$gt',
+  //   attributes: [ 'id' ]
+  // }
 })
 
 // Resets the database and launches the express app on :8081
 database
   .sync({ force: false })
   .then(function () {
-    app.listen(3000, function () {
-      console.log('listening at http://%s:%s', 'localhost', 3000)
+    httpSvr.listen(3000, function () {
+      console.log('listening at http://192.168.1.216:%d', httpSvr.address().port)
     })
   })

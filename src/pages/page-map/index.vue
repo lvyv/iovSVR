@@ -42,6 +42,12 @@ import * as moment from "moment";
 import "moment/locale/zh-cn";
 import canlendar from "@/components/controls/canlendar-heatmap.vue"
 
+import Vue from 'vue'
+import VueSocketio from 'vue-socket.io'
+import io from 'socket.io-client'
+let iourl = 'http://192.168.1.216:3000'
+Vue.use(VueSocketio, io(iourl)) // 注意和本地服务器地址及端口一致
+
 moment.locale("zh-cn");
 export default {
   props: ["mapData"],
@@ -80,6 +86,12 @@ export default {
   },
   components: {
     canlendar:canlendar
+  },
+  sockets: {
+    mapagent_title: function(data) {
+      console.log('got websocket data:=-', data);
+      this.$socket.emit('backend.map', 'hello world');
+    }
   },
   mounted() {
     this.initMap();
@@ -412,37 +424,10 @@ export default {
 @import "../../../node_modules/leaflet/dist/leaflet.css";
 @import "../../../node_modules/leaflet.markercluster/dist/MarkerCluster.css";
 @import "./style.css";
-#leaflet-map {
-  /*width: 100%;
-        height: 450px;*/
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  position: absolute;
-  width: auto;
-  height: auto;
-  z-index: 0;
-}
-/* icon style */
-#leaflet-map .easy-button-button {
-  border: none;
-  border-radius: 2px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  background-color: rgb(255, 255, 255);
-}
-#leaflet-map .easy-button-button .fa {
-  vertical-align: 0;
-  font-size: 1.5em;
-}
-#startupBox {
-  top:100px;
-}
-@media (max-width: 768px) {
+
+/* @media (max-width: 768px) {
   #leaflet-map {
     height: 300px;
   }
-}
+} */
 </style>

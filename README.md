@@ -16,4 +16,5 @@ Internet of vehicle platform template, rapid development &amp; deployment &amp; 
 二、系统概览图
 
 ![](https://github.com/lvyv/iovSVR/blob/master/doc/architecture.png)
+![](https://github.com/lvyv/iovSVR/blob/master/doc/smart-vehicle.svg)
 
