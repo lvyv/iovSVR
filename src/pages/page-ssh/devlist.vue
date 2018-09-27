@@ -35,7 +35,7 @@
   </el-table>
 </template>
 <script>
-import axios from 'axios'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'devlist',
@@ -73,6 +73,10 @@ export default {
 
   },
   methods: {
+    ...mapMutations([
+      'changeHost',
+      'changeUser'
+    ]),
     initData: function () {
       var tabledata = {
         'DEVSN': 'E529TESTSN',
@@ -86,7 +90,16 @@ export default {
       this.$socket.emit('dev')
     },
     go2ssh: function (row) {
-      //emit father event
+      this.changeHost({
+        host: '192.168.100.250',
+        port: row.SSHADDR
+      })
+      this.changeUser({
+        username: 'root',
+        password: 'beidouapp.com'
+      })
+      // emit father event
+      this.emit('sshLogin')
     },
     tryssh: function (row) {
       console.log(row.DEVSN)

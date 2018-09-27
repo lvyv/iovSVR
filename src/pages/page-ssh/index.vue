@@ -1,6 +1,8 @@
 <template>
   <d2container>
-    <div :is="currentView">
+    <div
+    :is="currentView"
+    @sshLogin="ToggleWebssh">
     </div>
   </d2container>
 </template>
@@ -18,7 +20,7 @@ export default {
       currentView: 'devlist'
     }
   },
-  created: function () {
+  mounted: function () {
     this.currentView = devlist
   },
   sockets: {

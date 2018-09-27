@@ -31,10 +31,11 @@ import faKey from '@fortawesome/fontawesome-free-solid/faKey'
 import faCog from '@fortawesome/fontawesome-free-solid/faCog'
 // import * as io from 'socket.io-client/dist/socket.io.js'
 import axios from 'axios'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'webssh',
-  // props: ['sshcfg'],
+  props: ['sshcfg'],
   data: function () {
     return {
       id: null,
@@ -52,22 +53,22 @@ export default {
   created: function () {
   },
   mounted: function () {
-    // if (this.sshcfg == null) {
-    //  console.log('sshcfg nothing inside!')
-    //  document.getElementById('status').style.backgroundColor = 'red'
-    //  document.getElementById('status').innerHTML = 'NOTHING TO CONNECT !!'
-    // } else {
+    if(!this.getters.loginInfo) {
+      this.$socket.emit('sshready',this.getters.loginInfo)
+    }
     this.init()
-    // }
   },
   computed: {
+    ...mapGetters([
+     'loginInfo'
+    ])
   },
   watch: {
   },
   sockets: {
     sshagent_connect: function () {
       this.id = this.$socket.id
-      this.$socket.emit('geometry', this.term.cols, this.term.rows)
+      this.$socket.emit('sshagent_geometry', this.term.cols, this.term.rows)
     },
     sshagent_setTerminalOpts: function (data) {
       this.term.setOption('cursorBlink', data.cursorBlink)
