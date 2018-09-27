@@ -9,17 +9,15 @@ var SSH = require('ssh2').Client
 var termCols, termRows
 
 // public
-module.exports = function socket (socket) {
+module.exports = function sshsock(socket) {
   // if websocket connection arrives without an express session, kill it
   if (!socket.request.session) {
     socket.emit('401 UNAUTHORIZED')
     debugWebSSH2('SOCKET: No Express Session / REJECTED')
-    socket.disconnect(true)
-    console.log();
     return
   }
   var conn = new SSH()
-  socket.on('geometry', function socketOnGeometry (cols, rows) {
+  socket.on('sshagent_geometry', function socketOnGeometry (cols, rows) {
     termCols = cols
     termRows = rows
     console.log(cols + "------"+rows);
@@ -28,19 +26,19 @@ module.exports = function socket (socket) {
         // need to convert to cr/lf for proper formatting
         console.log("data:"+data);
     data = data.replace(/\r?\n/g, '\r\n')
-    socket.emit('data', data.toString('utf-8'))
+    socket.emit('sshagent_data', data.toString('utf-8'))
   })
 
   conn.on('ready', function connOnReady () {
     console.log('WebSSH2 Login: user=' + socket.request.session.username + ' from=' + socket.handshake.address + ' host=' + socket.request.session.ssh.host + ' port=' + socket.request.session.ssh.port + ' sessionID=' + socket.request.sessionID + '/' + socket.id + ' mrhsession=' + socket.request.session.ssh.mrhsession + ' allowreplay=' + socket.request.session.ssh.allowreplay + ' term=' + socket.request.session.ssh.term)
-    socket.emit('setTerminalOpts', socket.request.session.ssh.terminal)
-    socket.emit('title', 'ssh://' + socket.request.session.ssh.host)
+    socket.emit('sshagent_setTerminalOpts', socket.request.session.ssh.terminal)
+    socket.emit('sshagent_title', 'ssh://' + socket.request.session.ssh.host)
     if (socket.request.session.ssh.header.background) socket.emit('headerBackground', socket.request.session.ssh.header.background)
     if (socket.request.session.ssh.header.name) socket.emit('header', socket.request.session.ssh.header.name)
-    socket.emit('footer', 'ssh://' + socket.request.session.username + '@' + socket.request.session.ssh.host + ':' + socket.request.session.ssh.port)
-    socket.emit('status', 'SSH CONNECTION ESTABLISHED')
-    socket.emit('statusBackground', 'green')
-    socket.emit('allowreplay', socket.request.session.ssh.allowreplay)
+    socket.emit('sshagent_footer', 'ssh://' + socket.request.session.username + '@' + socket.request.session.ssh.host + ':' + socket.request.session.ssh.port)
+    socket.emit('sshagent_status', 'SSH CONNECTION ESTABLISHED')
+    socket.emit('sshagent_statusBackground', 'green')
+    socket.emit('sshagent_allowreplay', socket.request.session.ssh.allowreplay)
     conn.shell({
       term: socket.request.session.ssh.term,
       cols: termCols,
@@ -53,7 +51,7 @@ module.exports = function socket (socket) {
       }
       // poc to log commands from client
       if (socket.request.session.ssh.serverlog.client) var dataBuffer
-      socket.on('data', function socketOnData (data) {
+      socket.on('sshagent_data', function socketOnData (data) {
         stream.write(data)
         // poc to log commands from client
         if (socket.request.session.ssh.serverlog.client) {
@@ -65,7 +63,7 @@ module.exports = function socket (socket) {
           }
         }
       })
-      socket.on('control', function socketOnControl (controlData) {
+      socket.on('sshagent_control', function socketOnControl (controlData) {
         switch (controlData) {
           case 'replayCredentials':
             if (socket.request.session.ssh.allowreplay) {
@@ -76,18 +74,20 @@ module.exports = function socket (socket) {
             console.log('controlData: ' + controlData)
         }
       })
-      socket.on('resize', function socketOnResize (data) {
+      socket.on('sshagent_resize', function socketOnResize (data) {
         stream.setWindow(data.rows, data.cols)
       })
-      socket.on('disconnecting', function socketOnDisconnecting (reason) { debugWebSSH2('SOCKET DISCONNECTING: ' + reason) })
-      socket.on('disconnect', function socketOnDisconnect (reason) {
+      socket.on('sshagent_disconnecting', function socketOnDisconnecting (reason) {
+        debugWebSSH2('SOCKET DISCONNECTING: ' + reason)
+      })
+      socket.on('sshagent_disconnect', function socketOnDisconnect (reason) {
         debugWebSSH2('SOCKET DISCONNECT: ' + reason)
         err = { message: reason }
         SSHerror('CLIENT SOCKET DISCONNECT', err)
         conn.end()
         // socket.request.session.destroy()
       })
-      socket.on('error', function socketOnError (err) {
+      socket.on('sshagent_error', function socketOnError (err) {
         SSHerror('SOCKET ERROR', err)
         conn.end()
       })

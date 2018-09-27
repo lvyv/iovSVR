@@ -18,7 +18,7 @@ var history = require('connect-history-api-fallback')
 
 var indexRouter = require('./routes/index');
 var apiRouter= require('./routes/api');
-var websshRouter=require('./routes/webssh');
+// var websshRouter=require('./routes/webssh');
 
 var app = express();
 
@@ -57,7 +57,7 @@ app.disable('x-powered-by')
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use(myutil.basicAuth);
-app.use('/webssh', websshRouter);
+//app.use('/webssh', websshRouter);
 
 
 // catch 404 and forward to error handler
@@ -65,7 +65,6 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-var sshsocket = require('./socket')
 var webagent= require('./webagent')
 var server = require('http').Server(app)
 var io = require('socket.io')(server, { serveClient: false })
@@ -79,11 +78,10 @@ io.use(function (socket, next) {
 
 // bring up socket
 
-io.of('/webagent').on('connection', function (socket) {
+io.on('connection', function (socket) {
     var ag = new webagent(socket)
     //do something for ag
 })
 
-io.of('/sshagent').on('connection',sshsocket)
 
 module.exports = server;
