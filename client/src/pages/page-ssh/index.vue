@@ -25,7 +25,7 @@ export default {
   },
   sockets: {
     connect: function () {
-      console.log(this.$socket.connected)
+      // console.log(this.$socket.connected)
     }
   },
   methods: {

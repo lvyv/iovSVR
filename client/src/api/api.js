@@ -22,7 +22,7 @@ export default {
     })
   },
   getTrips (criteria) {
-    console.log(`/trips?${criteria}`)
+    // console.log(`/trips?${criteria}`)
     return this.execute('get', `/trips?${criteria}`)
   }
 

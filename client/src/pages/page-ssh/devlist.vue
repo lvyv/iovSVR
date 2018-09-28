@@ -53,14 +53,14 @@ export default {
   },
   sockets: {
     connect: function () {
-      console.log(this.$socket.connected)
+      // console.log(this.$socket.connected)
     },
     devlist: function (data) {
       if (Array.isArray(this.devtable)) {
         this.devtable.splice(0, this.devtable.length)
       }
       for (var i in data) {
-        console.log(data[i])
+        // console.log(data[i])
         var tabledata = {
           'DEVSN': data[i].SN,
           'CARNO': data[i].NO,
@@ -102,7 +102,7 @@ export default {
       this.emit('sshLogin')
     },
     tryssh: function (row) {
-      console.log(row.DEVSN)
+      // console.log(row.DEVSN)
       this.$socket.emit('link', row.DEVSN)
     }
   }

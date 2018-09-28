@@ -19,7 +19,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import * as Terminal from 'xterm/dist/xterm'
 import * as fit from 'xterm/dist/addons/fit/fit'
 import fontawesome from '@fortawesome/fontawesome'
@@ -31,7 +30,7 @@ import faKey from '@fortawesome/fontawesome-free-solid/faKey'
 import faCog from '@fortawesome/fontawesome-free-solid/faCog'
 // import * as io from 'socket.io-client/dist/socket.io.js'
 import axios from 'axios'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'webssh',
@@ -41,7 +40,7 @@ export default {
       id: null,
       sessionLogEnable: false,
       loggedData: false,
-      sessionLog: null,
+      sessionLog: '',
       sessionFooter: null,
       logDate: null,
       currentDate: null,
@@ -53,14 +52,14 @@ export default {
   created: function () {
   },
   mounted: function () {
-    if(!this.getters.loginInfo) {
-      this.$socket.emit('sshready',this.getters.loginInfo)
+    if (!this.loginInfo) {
+      this.$socket.emit('sshready', this.loginInfo)
     }
     this.init()
   },
   computed: {
     ...mapGetters([
-     'loginInfo'
+      'loginInfo'
     ])
   },
   watch: {
@@ -106,12 +105,11 @@ export default {
       document.getElementById('footer').innerHTML = data
     },
     sshagent_allowreplay: function (data) {
+      // console.log('allowreplay: ' + data)
       if (data === true) {
-        console.log('allowreplay: ' + data)
         document.getElementById('credentialsBtn').style.color = '#000'
         document.getElementById('credentialsBtn').credentialsBtn.addEventListener('click', this.replayCredentials)
       } else {
-        console.log('allowreplay: ' + data)
         document.getElementById('credentialsBtn').style.color = '#666'
       }
     },
@@ -149,20 +147,20 @@ export default {
       this.term.focus()
       this.term.fit()
       axios.get('/webssh/host/?host=192.168.100.250&port=22').then((res) => {
-        console.log(res)
+        // console.log(res)
       })
       this.term.on('data', function (data) {
-        this.$socket.emit('data', data)
+        this.$socket.emit('sshagent_data', data)
       })
-      this.$socket.emit('connect')
+      this.$socket.emit('sshagent_connect')
     },
     resizeScreen: function () {
       this.term.fit()
-      this.$socket.emit('resize', { cols: this.term.cols, rows: this.term.rows })
+      this.$socket.emit('sshagent_resize', { cols: this.term.cols, rows: this.term.rows })
     },
     replayCredentials: function  () { // eslint-disable-line
       this.$socket.emit('control', 'replayCredentials')
-      console.log('replaying credentials')
+      // console.log('replaying credentials')
       this.term.focus()
       return false
     },
@@ -173,7 +171,7 @@ export default {
         this.sessionLogEnable = false
         this.loggedData = true
         document.getElementById('logBtn').innerHTML = '<i class="fas fa-clipboard fa-fw"></i> Start Log'
-        console.log('stopping log, ' + this.sessionLogEnable)
+        // console.log('stopping log, ' + this.sessionLogEnable)
         this.currentDate = new Date()
         this.sessionLog = this.sessionLog + '\r\n\r\nLog End for ' + this.sessionFooter + ': ' +
           this.currentDate.getFullYear() + '/' + (this.currentDate.getMonth() + 1) + '/' +
@@ -187,7 +185,7 @@ export default {
         this.loggedData = true
         document.getElementById('logBtn').innerHTML = '<i class="fas fa-cog fa-spin fa-fw"></i> Stop Log'
         document.getElementById('downloadLogBtn').style.color = '#000'
-        console.log('starting log, ' + this.sessionLogEnable)
+        // console.log('starting log, ' + this.sessionLogEnable)
         this.currentDate = new Date()
         this.sessionLog = 'Log Start for ' + this.sessionFooter + ': ' +
           this.currentDate.getFullYear() + '/' + (this.currentDate.getMonth() + 1) + '/' +
@@ -206,6 +204,7 @@ export default {
           this.logDate.getDate() + '_' + this.logDate.getHours() + this.logDate.getMinutes() +
           this.logDate.getSeconds() + '.log'
         // regex should eliminate escape sequences from being logged.
+        // eslint-disable-next-line
         var blob = new Blob([this.sessionLog.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')], {
           type: 'text/plain'
         })

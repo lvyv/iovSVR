@@ -96,7 +96,7 @@ export default {
       this.sortOrders[key] = this.sortOrders[key] * -1
     },
     startup: function (entry) {
-      console.log('child component:', entry)
+      // console.log('child component:', entry)
       this.$emit('trajactory-startup', entry)
     },
     // initData: function (criteria) {
