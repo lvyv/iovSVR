@@ -2,7 +2,6 @@
 
 // private
 require('colors') // allow for color property extensions in log messages
-var debug = require('debug')('WebSSH2')
 var Auth = require('basic-auth')
 
 exports.basicAuth = function basicAuth (req, res, next) {

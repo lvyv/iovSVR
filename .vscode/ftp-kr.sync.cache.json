@@ -1,0 +1,756 @@
+{
+  "sftp://192.168.85.133:22@dare": {
+    "home": {
+      "dare": {
+        "iovSVR": {
+          ".browserslistrc": {
+            "type": "-",
+            "size": 36,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".env": {
+            "type": "-",
+            "size": 61,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".env.development": {
+            "type": "-",
+            "size": 61,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".eslintignore": {
+            "type": "-",
+            "size": 128,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".eslintrc.js": {
+            "type": "-",
+            "size": 365,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".gitignore": {
+            "type": "-",
+            "size": 213,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".postcssrc.js": {
+            "type": "-",
+            "size": 64,
+            "lmtime": 0,
+            "modified": false
+          },
+          "babel.config.js": {
+            "type": "-",
+            "size": 58,
+            "lmtime": 0,
+            "modified": false
+          },
+          "dev": {},
+          "jest.config.js": {
+            "type": "-",
+            "size": 531,
+            "lmtime": 0,
+            "modified": false
+          },
+          "LICENSE": {
+            "type": "-",
+            "size": 1082,
+            "lmtime": 0,
+            "modified": false
+          },
+          "package-lock.json": {
+            "type": "-",
+            "size": 639139,
+            "lmtime": 0,
+            "modified": true
+          },
+          "package.json": {
+            "type": "-",
+            "size": 2353,
+            "lmtime": 1537176353359,
+            "modified": true
+          },
+          "README.md": {
+            "type": "-",
+            "size": 370,
+            "lmtime": 1536914516005,
+            "modified": true
+          },
+          "src": {
+            "App.vue": {
+              "type": "-",
+              "size": 211,
+              "lmtime": 0,
+              "modified": false
+            },
+            "assets": {},
+            "components": {},
+            "i18n": {},
+            "layout": {},
+            "libs": {},
+            "main.js": {
+              "type": "-",
+              "size": 1943,
+              "lmtime": 1537176353362,
+              "modified": true
+            },
+            "menu": {
+              "aside.js": {
+                "type": "-",
+                "size": 266,
+                "lmtime": 0,
+                "modified": false
+              },
+              "header.js": {
+                "type": "-",
+                "size": 747,
+                "lmtime": 1537842718315,
+                "modified": false
+              }
+            },
+            "mock": {
+              "api": {
+                "sys": {
+                  "login": {
+                    "index.js": {
+                      "type": "-",
+                      "size": 862,
+                      "lmtime": 1537166223187,
+                      "modified": false
+                    }
+                  }
+                }
+              }
+            },
+            "pages": {
+              "error-page-404": {},
+              "index": {},
+              "login": {},
+              "page-leaflet": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 10670,
+                  "lmtime": 1537166223196,
+                  "modified": false
+                }
+              },
+              "page-map": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 13209,
+                  "lmtime": 1537166223212,
+                  "modified": true
+                },
+                "style.css": {
+                  "type": "-",
+                  "size": 8012,
+                  "lmtime": 1537166223219,
+                  "modified": true
+                }
+              },
+              "page-ssh": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 817,
+                  "lmtime": 1537858156296,
+                  "modified": false
+                },
+                "ssh.vue": {
+                  "type": "-",
+                  "size": 948,
+                  "lmtime": 1537176374924,
+                  "modified": false
+                },
+                "index.js": {
+                  "type": "-",
+                  "size": 6774,
+                  "lmtime": 1536913474784,
+                  "modified": false
+                },
+                "webssh.css": {
+                  "type": "-",
+                  "size": 2406,
+                  "lmtime": 1536813947325,
+                  "modified": false
+                },
+                "ssh.js": {
+                  "type": "-",
+                  "size": 6774,
+                  "lmtime": 1536914196305,
+                  "modified": false
+                },
+                "webssh.js": {
+                  "type": "-",
+                  "size": 6746,
+                  "lmtime": 1537260479619,
+                  "modified": false
+                },
+                "webssh.vue": {
+                  "type": "-",
+                  "size": 9206,
+                  "lmtime": 1537857469729,
+                  "modified": false
+                },
+                "webssh.1.vue": {
+                  "type": "-",
+                  "size": 9155,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "index.1.vue": {
+                  "type": "-",
+                  "size": 2651,
+                  "lmtime": 0,
+                  "modified": false
+                },
+                "devlist.vue": {
+                  "type": "-",
+                  "size": 2651,
+                  "lmtime": 1537409429979,
+                  "modified": false
+                }
+              },
+              "page1": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 606,
+                  "lmtime": 1537166223228,
+                  "modified": false
+                }
+              },
+              "page2": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 1219,
+                  "lmtime": 1537166223236,
+                  "modified": false
+                }
+              },
+              "page-dev-history": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 18714,
+                  "lmtime": 1537842718319,
+                  "modified": false
+                }
+              },
+              "page-dev-realtime": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 13227,
+                  "lmtime": 1537842718323,
+                  "modified": false
+                },
+                "index.vue.bak": {
+                  "type": "-",
+                  "size": 2222,
+                  "lmtime": 1537176353379,
+                  "modified": false
+                }
+              },
+              "page-video": {
+                "index.vue": {
+                  "type": "-",
+                  "size": 250,
+                  "lmtime": 1537176353382,
+                  "modified": false
+                }
+              }
+            },
+            "plugin": {},
+            "router": {
+              "index.js": {
+                "type": "-",
+                "size": 1187,
+                "lmtime": 0,
+                "modified": false
+              },
+              "routes.js": {
+                "type": "-",
+                "size": 2084,
+                "lmtime": 1537842718478,
+                "modified": false
+              }
+            },
+            "setting.js": {
+              "type": "-",
+              "size": 1551,
+              "lmtime": 0,
+              "modified": false
+            },
+            "store": {}
+          },
+          "tests": {},
+          "vue.config.js": {
+            "type": "-",
+            "size": 4173,
+            "lmtime": 1537177387064,
+            "modified": true
+          },
+          "win32-x64-57_binding.node": {
+            "type": "-",
+            "size": 2554880,
+            "lmtime": 0,
+            "modified": false
+          },
+          "yarn.lock": {
+            "type": "-",
+            "size": 342581,
+            "lmtime": 0,
+            "modified": false
+          },
+          "npm-debug.log": {
+            "type": "-",
+            "size": 2709,
+            "lmtime": 0,
+            "modified": false
+          },
+          ".nvmrc": {
+            "type": "-",
+            "size": 11,
+            "lmtime": 0,
+            "modified": false
+          },
+          "node_modules": {},
+          "server": {
+            "server": {
+              "agentpool.js": {
+                "type": "-",
+                "size": 1062,
+                "lmtime": 1536826855316,
+                "modified": false
+              },
+              "devlistsock.js": {
+                "type": "-",
+                "size": 1790,
+                "lmtime": 1536826855327,
+                "modified": false
+              },
+              "expressOptions.js": {
+                "type": "-",
+                "size": 230,
+                "lmtime": 1536826855383,
+                "modified": false
+              },
+              "index.js": {
+                "type": "-",
+                "size": 2499,
+                "lmtime": 1536826855424,
+                "modified": false
+              },
+              "iovagent.js": {
+                "type": "-",
+                "size": 6649,
+                "lmtime": 1536826855440,
+                "modified": false
+              },
+              "routes": {
+                "api": {
+                  "db.js": {
+                    "type": "-",
+                    "size": 4672,
+                    "lmtime": 1536826855476,
+                    "modified": false
+                  },
+                  "devs.js": {
+                    "type": "-",
+                    "size": 1218,
+                    "lmtime": 1536826855488,
+                    "modified": false
+                  },
+                  "ports.js": {
+                    "type": "-",
+                    "size": 857,
+                    "lmtime": 1536826855500,
+                    "modified": false
+                  }
+                },
+                "api.js": {
+                  "type": "-",
+                  "size": 1688,
+                  "lmtime": 1536826855514,
+                  "modified": false
+                },
+                "index.js": {
+                  "type": "-",
+                  "size": 206,
+                  "lmtime": 1536826855531,
+                  "modified": false
+                },
+                "webssh": {
+                  "expressOptions.js": {
+                    "type": "-",
+                    "size": 230,
+                    "lmtime": 1536826855536,
+                    "modified": false
+                  },
+                  "util.js": {
+                    "type": "-",
+                    "size": 942,
+                    "lmtime": 1536826855576,
+                    "modified": false
+                  },
+                  "webssh.json": {
+                    "type": "-",
+                    "size": 1183,
+                    "lmtime": 1536826855605,
+                    "modified": false
+                  }
+                },
+                "webssh.js": {
+                  "type": "-",
+                  "size": 2742,
+                  "lmtime": 1536826855665,
+                  "modified": false
+                }
+              },
+              "socket.js": {
+                "type": "-",
+                "size": 7942,
+                "lmtime": 1536826855703,
+                "modified": false
+              },
+              "socketpool.js": {
+                "type": "-",
+                "size": 242,
+                "lmtime": 1536826855707,
+                "modified": false
+              },
+              "sockpool.js": {
+                "type": "-",
+                "size": 538,
+                "lmtime": 1536826855710,
+                "modified": false
+              },
+              "Tsvr.js": {
+                "type": "-",
+                "size": 303,
+                "lmtime": 1536826855263,
+                "modified": false
+              },
+              "webagent.js": {
+                "type": "-",
+                "size": 1970,
+                "lmtime": 1536826855723,
+                "modified": false
+              }
+            },
+            "src": {
+              "agentpool.js": {
+                "type": "-",
+                "size": 1062,
+                "lmtime": 1536826855316,
+                "modified": false
+              },
+              "devlistsock.js": {
+                "type": "-",
+                "size": 1790,
+                "lmtime": 1536826855327,
+                "modified": false
+              },
+              "expressOptions.js": {
+                "type": "-",
+                "size": 230,
+                "lmtime": 1536826855383,
+                "modified": false
+              },
+              "index.js": {
+                "type": "-",
+                "size": 2501,
+                "lmtime": 1536914029937,
+                "modified": false
+              },
+              "iovagent.js": {
+                "type": "-",
+                "size": 6649,
+                "lmtime": 1536826855440,
+                "modified": false
+              },
+              "routes": {
+                "api": {
+                  "db.js": {
+                    "type": "-",
+                    "size": 4672,
+                    "lmtime": 1536826855476,
+                    "modified": false
+                  },
+                  "devs.js": {
+                    "type": "-",
+                    "size": 1218,
+                    "lmtime": 1536826855488,
+                    "modified": false
+                  },
+                  "ports.js": {
+                    "type": "-",
+                    "size": 857,
+                    "lmtime": 1536826855500,
+                    "modified": false
+                  }
+                },
+                "api.js": {
+                  "type": "-",
+                  "size": 1688,
+                  "lmtime": 1536826855514,
+                  "modified": false
+                },
+                "index.js": {
+                  "type": "-",
+                  "size": 210,
+                  "lmtime": 1536914113955,
+                  "modified": false
+                },
+                "webssh": {
+                  "expressOptions.js": {
+                    "type": "-",
+                    "size": 230,
+                    "lmtime": 1536826855536,
+                    "modified": false
+                  },
+                  "util.js": {
+                    "type": "-",
+                    "size": 942,
+                    "lmtime": 1536826855576,
+                    "modified": false
+                  },
+                  "webssh.json": {
+                    "type": "-",
+                    "size": 1183,
+                    "lmtime": 1536826855605,
+                    "modified": false
+                  }
+                },
+                "webssh.js": {
+                  "type": "-",
+                  "size": 2744,
+                  "lmtime": 1536831928150,
+                  "modified": false
+                }
+              },
+              "socket.js": {
+                "type": "-",
+                "size": 7942,
+                "lmtime": 1536826855703,
+                "modified": false
+              },
+              "socketpool.js": {
+                "type": "-",
+                "size": 242,
+                "lmtime": 1536826855707,
+                "modified": false
+              },
+              "sockpool.js": {
+                "type": "-",
+                "size": 538,
+                "lmtime": 1536826855710,
+                "modified": false
+              },
+              "Tsvr.js": {
+                "type": "-",
+                "size": 303,
+                "lmtime": 1536826855263,
+                "modified": false
+              },
+              "webagent.js": {
+                "type": "-",
+                "size": 1970,
+                "lmtime": 1536826855723,
+                "modified": false
+              },
+              "main.js": {
+                "type": "-",
+                "size": 133,
+                "lmtime": 1536826924390,
+                "modified": false
+              }
+            },
+            "config": {
+              "dev.env.js": {
+                "type": "-",
+                "size": 156,
+                "lmtime": 1536826882865,
+                "modified": false
+              },
+              "index.js": {
+                "type": "-",
+                "size": 2301,
+                "lmtime": 1536913967282,
+                "modified": false
+              },
+              "prod.env.js": {
+                "type": "-",
+                "size": 61,
+                "lmtime": 1536826882883,
+                "modified": false
+              },
+              "test.env.js": {
+                "type": "-",
+                "size": 149,
+                "lmtime": 1536826882890,
+                "modified": false
+              }
+            },
+            "node_modules": {},
+            "package.json": {
+              "type": "-",
+              "size": 2575,
+              "lmtime": 1536829252505,
+              "modified": false
+            },
+            "package-lock.json": {
+              "type": "-",
+              "size": 35380,
+              "lmtime": 0,
+              "modified": true
+            },
+            "public": {
+              "type": "l",
+              "size": 9,
+              "lmtime": 0,
+              "modified": true
+            }
+          },
+          "stats.json": {
+            "type": "-",
+            "size": 72,
+            "lmtime": 0,
+            "modified": false
+          },
+          "projenv.cfg": {
+            "type": "-",
+            "size": 182261,
+            "lmtime": 0,
+            "modified": false
+          },
+          "env.cfg": {
+            "type": "-",
+            "size": 223064,
+            "lmtime": 0,
+            "modified": false
+          },
+          "home": {},
+          "doc": {
+            "architecture.png": {
+              "type": "-",
+              "size": 55493,
+              "lmtime": 1537842717725,
+              "modified": false
+            },
+            "iovBOX-E515S.pdf": {
+              "type": "-",
+              "size": 1237628,
+              "lmtime": 1537842717736,
+              "modified": false
+            },
+            "iovBOX-E529.pdf": {
+              "type": "-",
+              "size": 1314360,
+              "lmtime": 1537842717792,
+              "modified": false
+            }
+          },
+          "public": {
+            "data": {
+              "taxiday0.geojson": {
+                "type": "-",
+                "size": 149118,
+                "lmtime": 1537842717895,
+                "modified": false
+              },
+              "taxiday1.geojson": {
+                "type": "-",
+                "size": 133613,
+                "lmtime": 1537842717900,
+                "modified": false
+              },
+              "taxiday10.geojson": {
+                "type": "-",
+                "size": 276624,
+                "lmtime": 1537842717944,
+                "modified": false
+              },
+              "taxiday11.geojson": {
+                "type": "-",
+                "size": 158097,
+                "lmtime": 1537842718008,
+                "modified": false
+              },
+              "taxiday12.geojson": {
+                "type": "-",
+                "size": 187204,
+                "lmtime": 1537842718013,
+                "modified": false
+              },
+              "taxiday13.geojson": {
+                "type": "-",
+                "size": 190489,
+                "lmtime": 1537842718016,
+                "modified": false
+              },
+              "taxiday14.geojson": {
+                "type": "-",
+                "size": 231780,
+                "lmtime": 1537842718019,
+                "modified": false
+              },
+              "taxiday2.geojson": {
+                "type": "-",
+                "size": 272874,
+                "lmtime": 1537842718075,
+                "modified": false
+              },
+              "taxiday3.geojson": {
+                "type": "-",
+                "size": 96630,
+                "lmtime": 1537842718078,
+                "modified": false
+              },
+              "taxiday4.geojson": {
+                "type": "-",
+                "size": 208433,
+                "lmtime": 1537842718117,
+                "modified": false
+              },
+              "taxiday5.geojson": {
+                "type": "-",
+                "size": 170026,
+                "lmtime": 1537842718120,
+                "modified": false
+              },
+              "taxiday6.geojson": {
+                "type": "-",
+                "size": 120795,
+                "lmtime": 1537842718168,
+                "modified": false
+              },
+              "taxiday7.geojson": {
+                "type": "-",
+                "size": 212946,
+                "lmtime": 1537842718301,
+                "modified": false
+              },
+              "taxiday8.geojson": {
+                "type": "-",
+                "size": 221080,
+                "lmtime": 1537842718304,
+                "modified": false
+              },
+              "taxiday9.geojson": {
+                "type": "-",
+                "size": 108750,
+                "lmtime": 1537842718308,
+                "modified": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$version": 1
+}
