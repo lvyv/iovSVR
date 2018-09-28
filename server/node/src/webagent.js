@@ -5,7 +5,7 @@
 var pool = require('./agentpool')
 var sshsocket = require('./sshsock')
 var devsocket = require('./devsock')
-var sshsession = require('./routes/webssh/sshsession.js')
+var sshsession = require('./webssh/sshsession.js')
 
 // public
 module.exports = webagent

@@ -1,10 +1,10 @@
 /* eslint-disable */
 var createError = require('http-errors')
 var path = require('path')
-var config = require('read-config')(path.join(__dirname, '/routes/webssh/webssh.json'))
+var config = require('read-config')(path.join(__dirname, '/webssh/webssh.json'))
 var express = require('express')
 var cookieParser = require('cookie-parser')
-var myutil = require('./routes/webssh/util')
+var myutil = require('./webssh/util')
 var logger = require('morgan')
 var session = require('express-session')({
   resave: false,
@@ -35,8 +35,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 // static files
-// app.use(express.static(path.join(__dirname, '../dist'), expressOptions))
-app.use(express.static(path.join(__dirname, '../public')))
+app.use(express.static(path.join(__dirname, '../../public')))
 
 // express
 app.use(compression({ level: 9 }))
@@ -46,7 +45,7 @@ app.disable('x-powered-by')
 
 app.use('/', indexRouter)
 app.use('/api', apiRouter)
-app.use(myutil.basicAuth)
+// app.use(myutil.basicAuth)
 // app.use('/webssh', websshRouter);
 
 // catch 404 and forward to error handler

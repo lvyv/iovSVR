@@ -24,14 +24,14 @@ function resolve (dir) {
 
 // 基础路径 注意发布之前要先修改这里
 const baseUrl = '/'
-const staticUrl = resolve(__dirname, './public') 
+const staticUrl = resolve('public') 
 
 const productionSourceMap = false
 const pathsToClean = [
   staticUrl,
 ]
 const cleanOptions = {
-  root:    path.resolve(__dirname, './'),
+  root:    path.resolve(__dirname,'./public'),
   verbose:  true,
   dry:      false
 }
@@ -86,7 +86,7 @@ module.exports = {
     //copy ssh css.
     config.plugin('copy-ssh-css')
       .use(CopyWebpackPlugin, [[{
-        from: path.resolve(__dirname,'./src/pages/page-ssh/webssh.css'),
+        from: resolve('src/pages/page-ssh/webssh.css'),
         to: staticUrl,
       }]])
     //split chuncks
