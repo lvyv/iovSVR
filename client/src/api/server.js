@@ -6,6 +6,8 @@ const epilogue = require('epilogue')
 let app = require('express')()
 let httpSvr = require('http').Server(app)
 let io = require('socket.io')(httpSvr)
+const MongoClient = require('mongodb').MongoClient
+var url = 'mongodb://localhost:27017/'
 
 function answerCli (sock) {
   console.log('emit mapagent_title msg')
@@ -23,6 +25,13 @@ io.on('connection', function (socket) {
     console.log('data received from client', data)
   })
 })
+
+var dbo
+MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
+  if (err) throw err
+  dbo = db.db('sensor_data')
+})
+
 // const OktaJwtVerifier = require('@okta/jwt-verifier')
 
 // const oktaJwtVerifier = new OktaJwtVerifier({
@@ -33,6 +42,21 @@ io.on('connection', function (socket) {
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.get('/mongodb/sensor_data/s_data/:ids/:sTime/:eTime', function (req, res) {
+  var id = req.params.ids.split(',').map(Number)
+  var sTime = req.params.sTime.replace(' ', 'T') + 'Z'
+  var eTime = req.params.eTime.replace(' ', 'T') + 'Z'
+  var condition = { 'sensorid': { $in: id }, 'time': { $gte: new Date(sTime), $lte: new Date(eTime) } }
+  dbo.collection('s_data').find(condition).toArray(function (err, result) { // 返回集合中所有数据
+    try {
+      if (err) { throw err }
+    } catch (error) {
+      console.log(error)
+    }
+    console.log(result)
+    res.json(result)
+  })
+})
 
 // verify JWT token middleware
 app.use((req, res, next) => {
@@ -69,6 +93,36 @@ let Trip = database.define('trips', {
   data: Sequelize.TEXT
 })
 
+// let bridge = database.define('bridges', {
+//   briid: Sequelize.INTEGER, // bridge id
+//   addr: Sequelize.TEXT, // bridge address
+//   mod: Sequelize.TEXT,
+//   memo: Sequelize.TEXT // bridge reserve
+// })
+
+let Devinfo = database.define('dev_infos', {
+  devid: Sequelize.INTEGER, // device id
+  sn: Sequelize.STRING, // device sn
+  version: Sequelize.STRING, // device version
+  briid: Sequelize.INTEGER // bridge id
+})
+
+let Sensorcfg = database.define('sensor_cfgs', {
+  type: Sequelize.INTEGER,
+  name: Sequelize.TEXT,
+  range: Sequelize.INTEGER,
+  unit: Sequelize.TEXT
+})
+
+let Sensors = database.define('sensors', {
+  sensorid: Sequelize.STRING, // sensor id
+  sensorfac: Sequelize.TEXT, // sensor factory
+  sensortype: Sequelize.INTEGER, // sensor type
+  devid: Sequelize.INTEGER, // device id
+  chid: Sequelize.INTEGER, // channel id
+  position: Sequelize.TEXT // sensor position
+})
+
 // Initialize epilogue
 epilogue.initialize({
   app: app,
@@ -79,11 +133,38 @@ epilogue.initialize({
 // let userResource = epilogue.resource({
 epilogue.resource({
   model: Trip,
-  endpoints: ['/trips', '/trips/:id']
-  // search: {
-  //   operator: '$gt',
-  //   attributes: [ 'id' ]
-  // }
+  endpoints: ['/trips', '/trips/:id'],
+  search: {
+    operator: '$gt',
+    attributes: [ 'id' ]
+  }
+})
+
+epilogue.resource({
+  model: Devinfo,
+  endpoints: ['/dev_infos', '/dev_infos/:id'],
+  search: {
+    operator: '$gt',
+    attributes: [ 'id' ]
+  }
+})
+
+epilogue.resource({
+  model: Sensorcfg,
+  endpoints: ['/sensor_cfgs', '/sensor_cfgs/:id'],
+  search: {
+    operator: '$gt',
+    attributes: [ 'id' ]
+  }
+})
+
+epilogue.resource({
+  model: Sensors,
+  endpoints: ['/sensors', '/sensors/:devid'],
+  search: {
+    operator: '$eq',
+    attributes: [ 'devid' ]
+  }
 })
 
 // Resets the database and launches the express app on :8081
@@ -91,6 +172,6 @@ database
   .sync({ force: false })
   .then(function () {
     httpSvr.listen(3000, function () {
-      console.log('listening at http://192.168.1.216:%d', httpSvr.address().port)
+      console.log('listening at http://%s:%d', 'localhost', httpSvr.address().port)
     })
   })

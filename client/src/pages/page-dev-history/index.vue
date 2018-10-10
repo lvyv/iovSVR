@@ -13,11 +13,11 @@
         </el-form-item>
 
         <el-form-item label="开始时间" prop="startTime">
-          <el-date-picker v-model="searchData.startTime" type="datetime" placeholder="选择时间"  :picker-options="pickerOptions1"></el-date-picker>
+          <el-date-picker v-model="searchData.startTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择时间"  :picker-options="pickerOptions1"></el-date-picker>
         </el-form-item>
 
         <el-form-item label="结束时间" prop="endTime">
-          <el-date-picker v-model="searchData.endTime" type="datetime" placeholder="选择时间"  :picker-options="pickerOptions1"></el-date-picker>
+          <el-date-picker v-model="searchData.endTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择时间"  :picker-options="pickerOptions1"></el-date-picker>
         </el-form-item>
 
         <el-form-item>
@@ -39,7 +39,7 @@
       <el-table-column align="center" prop="sn" label="序列号"></el-table-column>
       <el-table-column align="center" prop="num" label="传感器编号" sortable></el-table-column>
       <el-table-column align="center" prop="categories" label="传感器类型"></el-table-column>
-      <el-table-column align="center" prop="name" label="传感器名称"></el-table-column>
+      <el-table-column align="center" prop="fac" label="传感器厂家"></el-table-column>
       <el-table-column align="center" prop="range" label="量程"></el-table-column>
       <el-table-column align="center" prop="unit" label="单位"></el-table-column>
       <el-table-column align="center" prop="position" label="安装点位"></el-table-column>
@@ -53,9 +53,9 @@
             <span size="mini">传感器编号:</span>
             <span size="mini" style="color:#FF0000"> {{ curNum }} </span>
             <span size="mini">时间：</span>
-            <span size="mini" style="color:#FF0000"> {{ searchData.startDateTime }} </span>
+            <span size="mini" style="color:#FF0000"> {{ searchData.startTime }} </span>
             <span size="mini">至</span>
-            <span size="mini" style="color:#FF0000"> {{ searchData.endDateTime }} </span>
+            <span size="mini" style="color:#FF0000"> {{ searchData.endTime }} </span>
             <el-table
               border
               :data="sensor.slice((diacurrentPage-1)*diapageSize,diacurrentPage*diapageSize)"
@@ -65,17 +65,10 @@
               <el-table-column align="center" prop="value" label="采集数值"></el-table-column>
             </el-table>
             <template slot="footer">
-              <el-pagination
-                align="center"
-                background
-                @size-change="diahandleSizeChange"
-                @current-change="diahandleCurrentChange"
-                :current-page="diacurrentPage"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="diapageSize"
-                layout="prev, pager, next, jumper, sizes"
-                :total="diatotalItem">
-              </el-pagination>
+              <pagination
+              :total="diatotalItem"
+              @pageChange="diapageChange">
+              </pagination>
             </template>
           </el-dialog>
         </template>
@@ -89,9 +82,9 @@
             <span size="mini">传感器编号:</span>
             <span size="mini" style="color:#FF0000"> {{ curNum }} </span>
             <span size="mini">时间：</span>
-            <span size="mini" style="color:#FF0000"> {{ searchData.startDateTime }} </span>
+            <span size="mini" style="color:#FF0000"> {{ searchData.startTime }} </span>
             <span size="mini">至</span>
-            <span size="mini" style="color:#FF0000"> {{ searchData.endDateTime }} </span>
+            <span size="mini" style="color:#FF0000"> {{ searchData.endTime }} </span>
             <ve-line :data="chartData" :extend="extend"></ve-line>
           </el-dialog>
         </template>
@@ -99,22 +92,18 @@
     </el-table>
 
     <template slot="footer">
-      <el-pagination
-        align="center"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="pageSize"
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalItem">
-      </el-pagination>
+      <pagination
+        :total="totalItem"
+        @pageChange="pageChange">
+      </pagination>
     </template>
   </d2-container>
 </template>
 
 <script>
+import api from '@/api/api'
+import pagination from '@/components/pagination/pagination.vue'
+
 export default {
   data () {
     this.extend = {
@@ -127,353 +116,28 @@ export default {
       }
     }
     return {
-      dat: [
-        {
-          sn: 'E529A17010001',
-          num: '0000001',
-          categories: '压力传感器',
-          position: '东门大桥1号桥墩西',
-          name: '东门大桥1号桥墩西压力',
-          range: '20',
-          unit: 'MPa',
-          sensor: [
-            {
-              time: '2018-9-10 12:01:01',
-              value: 1
-            },
-            {
-              time: '2018-9-10 12:02:01',
-              value: 2
-            },
-            {
-              time: '2018-9-10 12:03:01',
-              value: 0
-            },
-            {
-              time: '2018-9-10 12:04:01',
-              value: -1
-            },
-            {
-              time: '2018-9-10 12:05:01',
-              value: 300
-            },
-            {
-              time: '2018-9-10 12:06:01',
-              value: 100
-            },
-            {
-              time: '2018-9-10 12:07:01',
-              value: 2
-            },
-            {
-              time: '2018-9-10 12:08:01',
-              value: 0
-            },
-            {
-              time: '2018-9-10 12:09:01',
-              value: -100
-            },
-            {
-              time: '2018-9-10 12:10:01',
-              value: 3
-            },
-            {
-              time: '2018-9-10 12:11:01',
-              value: 1
-            },
-            {
-              time: '2018-9-10 12:12:01',
-              value: 2
-            },
-            {
-              time: '2018-9-10 12:13:01',
-              value: 1
-            },
-            {
-              time: '2018-9-10 12:18:01',
-              value: 200
-            },
-            {
-              time: '2018-9-10 12:19:01',
-              value: 0
-            },
-            {
-              time: '2018-9-10 12:25:01',
-              value: -100
-            },
-            {
-              time: '2018-9-10 12:29:01',
-              value: 3
-            },
-            {
-              time: '2018-9-10 13:01:01',
-              value: 1
-            },
-            {
-              time: '2018-9-15 12:07:01',
-              value: 2
-            },
-            {
-              time: '2018-9-19 12:08:01',
-              value: 0
-            },
-            {
-              time: '2018-9-22 12:09:01',
-              value: -1
-            },
-            {
-              time: '2018-9-30 12:10:01',
-              value: 3
-            },
-            {
-              time: '2018-9-30 13:11:01',
-              value: 1
-            },
-            {
-              time: '2018-9-30 14:12:01',
-              value: 0
-            },
-            {
-              time: '2018-9-30 14:15:01',
-              value: -10
-            },
-            {
-              time: '2018-9-30 14:19:01',
-              value: 100
-            },
-            {
-              time: '2018-9-30 14:20:01',
-              value: 200
-            },
-            {
-              time: '2018-9-30 15:12:01',
-              value: -400
-            },
-            {
-              time: '2018-9-30 16:12:01',
-              value: -500
-            },
-            {
-              time: '2018-9-30 17:12:01',
-              value: 1000
-            },
-            {
-              time: '2018-9-30 18:12:01',
-              value: -800
-            }
-          ]
-        },
-        {
-          sn: 'E529A17010001',
-          num: '0000002',
-          categories: '压力传感器',
-          position: '东门大桥2号桥墩西',
-          name: '东门大桥2号桥墩西压力',
-          range: '20',
-          unit: 'MPa',
-          sensor: [
-            {
-              time: '2018-9-30 14:12:01',
-              value: 0
-            },
-            {
-              time: '2018-9-30 14:15:01',
-              value: -10
-            },
-            {
-              time: '2018-9-30 14:19:01',
-              value: 100
-            },
-            {
-              time: '2018-9-30 14:20:01',
-              value: 200
-            },
-            {
-              time: '2018-9-30 15:12:01',
-              value: -400
-            },
-            {
-              time: '2018-9-30 16:12:01',
-              value: -500
-            }
-          ]
-        },
-        {
-          sn: 'E529A17010001',
-          num: '0000004',
-          categories: '压力传感器',
-          position: '东门大桥2号桥墩西',
-          name: '东门大桥2号桥墩西压力',
-          range: '20',
-          unit: 'MPa',
-          sensor: [
-            {
-              time: '2018-9-30 14:12:01',
-              value: 0
-            },
-            {
-              time: '2018-9-30 14:15:01',
-              value: -10
-            },
-            {
-              time: '2018-9-30 14:19:01',
-              value: 100
-            },
-            {
-              time: '2018-9-30 14:20:01',
-              value: 200
-            },
-            {
-              time: '2018-9-30 15:12:01',
-              value: -400
-            },
-            {
-              time: '2018-9-30 16:12:01',
-              value: -500
-            }
-          ]
-        },
-        {
-          sn: 'E529A17010001',
-          num: '0000005',
-          categories: '压力传感器',
-          position: '东门大桥2号桥墩西',
-          name: '东门大桥2号桥墩西压力',
-          range: '20',
-          unit: 'MPa',
-          sensor: [
-            {
-              time: '2018-9-30 14:12:01',
-              value: 0
-            },
-            {
-              time: '2018-9-30 14:15:01',
-              value: -10
-            },
-            {
-              time: '2018-9-30 14:19:01',
-              value: 100
-            },
-            {
-              time: '2018-9-30 14:20:01',
-              value: 200
-            },
-            {
-              time: '2018-9-30 15:12:01',
-              value: -400
-            },
-            {
-              time: '2018-9-30 16:12:01',
-              value: -500
-            }
-          ]
-        },
-        {
-          sn: 'E529A17010001',
-          num: '0000006',
-          categories: '压力传感器',
-          position: '东门大桥2号桥墩西',
-          name: '东门大桥2号桥墩西压力',
-          range: '20',
-          unit: 'MPa',
-          sensor: [
-            {
-              time: '2018-9-30 14:12:01',
-              value: 0
-            },
-            {
-              time: '2018-9-30 14:15:01',
-              value: -10
-            },
-            {
-              time: '2018-9-30 14:19:01',
-              value: 100
-            },
-            {
-              time: '2018-9-30 14:20:01',
-              value: 200
-            },
-            {
-              time: '2018-9-30 15:12:01',
-              value: -400
-            },
-            {
-              time: '2018-9-30 16:12:01',
-              value: -500
-            }
-          ]
-        },
-        {
-          sn: 'E529A17010001',
-          num: '0000007',
-          categories: '压力传感器',
-          position: '东门大桥2号桥墩西',
-          name: '东门大桥2号桥墩西压力',
-          range: '20',
-          unit: 'MPa',
-          sensor: [
-            {
-              time: '2018-9-30 14:12:01',
-              value: 0
-            },
-            {
-              time: '2018-9-30 14:15:01',
-              value: -10
-            },
-            {
-              time: '2018-9-30 14:19:01',
-              value: 100
-            },
-            {
-              time: '2018-9-30 14:20:01',
-              value: 200
-            },
-            {
-              time: '2018-9-30 15:12:01',
-              value: -400
-            },
-            {
-              time: '2018-9-30 16:12:01',
-              value: -500
-            }
-          ]
-        }
-      ],
-      alldev: [
-        {
-          sn: 'E529A17010001',
-          status: '0'
-        },
-        {
-          sn: 'E529A17010002',
-          status: '1'
-        },
-        {
-          sn: 'E529A17010003',
-          status: '1'
-        },
-        {
-          sn: 'E529A17010004',
-          status: '0'
-        }
-      ],
+      dat: [ ],
+      sensorcfg: [ ],
+      alldev: [ ],
+      senid: [ ],
+      // sensors: [ ],
+      // {type: 'date', required: true, message: '请选择日期', trigger: 'change' },
+      // 因为输入value-format不为date格式，如果rules中日期type为'date'则会报错，因此去掉
       rules: {
         sn: [
           { required: true, message: '请选择SN号', trigger: 'blur' }
         ],
         startTime: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          { required: true, message: '请选择日期', trigger: 'change' }
         ],
         endTime: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+          { required: true, message: '请选择日期', trigger: 'change' }
         ]
       },
       searchData: {
         sn: '',
         startTime: '',
-        endTime: '',
-        startDateTime: '',
-        endDateTime: ''
+        endTime: ''
       },
       chartData: {
         columns: ['time', 'value'],
@@ -518,24 +182,26 @@ export default {
   },
   created: function () {
     this.initDev()
-    this.initPage()
+  },
+  components: {
+    pagination: pagination
   },
   methods: {
     onSubmit (searchData) {
       this.$refs[searchData].validate((valid) => {
         if (valid) {
-          // alert(this.searchData.startTime)
-          // alert(this.searchData.endTime)
-          var search = {
-            sn: this.searchData.sn,
-            startStamp: this.searchData.startTime.getTime(),
-            endStamp: this.searchData.endTime.getTime()
+          if (new Date(this.searchData.endTime) < new Date(this.searchData.startTime)) {
+            alert('错误：起始时间应早于结束时间')
+            return
           }
-          this.searchData.startDateTime = this.formatDate(search.startStamp)
-          this.searchData.endDateTime = this.formatDate(search.endStamp)
-          // alert(search.sn + search.startStamp + search.endStamp)
           this.loading2 = true
-          if (this.dat.length !== 0) {
+          for (var id in this.alldev) {
+            if (this.alldev[id].sn === this.searchData.sn) {
+              this.getsensors(this.alldev[id].devid)
+              break
+            }
+          }
+          if (id === this.alldev.length - 1) {
             this.loading2 = false
           }
         } else {
@@ -543,35 +209,81 @@ export default {
         }
       })
     },
-    handleSizeChange (pSize) {
-      this.pageSize = pSize
-      // alert('每页条数:' + pSize)
+    pageChange (page) {
+      this.pageSize = page.pageSize
+      this.currentPage = page.currentPage
     },
-    handleCurrentChange (curPage) {
-      this.currentPage = curPage
-      // alert('当前页：' + curPage)
+    diapageChange (page) {
+      this.diapageSize = page.pageSize
+      this.diacurrentPage = page.currentPage
     },
-    diahandleSizeChange (diapSize) {
-      this.diapageSize = diapSize
-      // alert('dia每页条数:' + diapSize)
+    async initDev () {
+      var devtmp = await api.getDevInfo('id={"$gt":0}')
+      if (devtmp) {
+        for (var i in devtmp) {
+          var Dev = {
+            'sn': devtmp[i].sn,
+            'devid': devtmp[i].devid
+          }
+          this.alldev.push(Dev)
+        }
+      }
+      var sencfgtmp = await api.getSensorCfg('id={"$gt":0}')
+      if (sencfgtmp) {
+        for (var j in sencfgtmp) {
+          var sensorCFG = {
+            'type': sencfgtmp[j].id,
+            'name': sencfgtmp[j].name,
+            'range': sencfgtmp[j].range,
+            'unit': sencfgtmp[j].unit
+          }
+          this.sensorcfg.push(sensorCFG)
+        }
+      }
     },
-    diahandleCurrentChange (diacurPage) {
-      this.diacurrentPage = diacurPage
-      // alert('dia当前页：' + diacurPage)
-    },
-    initPage: function () {
-      this.totalItem = this.dat.length
-      // alert('总条数：' + this.totalItem)
-    },
-    initDev: function () {
-      // var allDev = []
-      // this.alldev = allDev
-    },
-    statusFormat (row, column) {
-      if (row.status === 0) {
-        return '离线'
-      } else {
-        return '在线'
+    async getsensors (devId) {
+      var Sensors = await api.getSensors('devid={"$eq":' + devId + '}')
+      if (Sensors) {
+        this.senid = []
+        this.dat = []
+        for (var idx in Sensors) {
+          for (var jdx in this.sensorcfg) {
+            if (this.sensorcfg[jdx].type === Sensors[idx].sensortype) {
+              var sentmp = {
+                'sn': this.searchData.sn,
+                'num': parseInt(Sensors[idx].sensorid),
+                'categories': this.sensorcfg[jdx].name,
+                'position': Sensors[idx].position,
+                'fac': Sensors[idx].sensorfac,
+                'range': parseInt(this.sensorcfg[jdx].range),
+                'unit': this.sensorcfg[jdx].unit,
+                sensor: [ ]
+              }
+              this.senid.push(sentmp.num)
+              this.dat.push(sentmp)
+              break
+            }
+          }
+        }
+        this.totalItem = this.dat.length
+        var Sendat = await api.getSensorData(this.senid, this.searchData.startTime, this.searchData.endTime)
+        if (Sendat) {
+          for (var s in Sendat) {
+            for (var d in this.dat) {
+              if (Sendat[s].sensorid === this.dat[d].num) {
+                var sensorValue = {
+                  'value': Sendat[s].value,
+                  'time': Sendat[s].time.replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                }
+                // var dateee = new Date("2017-07-09T09:46:49.667").toJSON()
+                // var date = new Date(+new Date(dateee)+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'')
+                this.dat[d].sensor.push(sensorValue)
+                break
+              }
+            }
+          }
+        }
+        this.loading2 = false
       }
     },
     clickCheck (row, index) {
@@ -594,16 +306,6 @@ export default {
           return
         }
       }
-    },
-    formatDate (timestamp) {
-      var date = new Date(timestamp)
-      var Y = date.getFullYear() + '-'
-      var M = (date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '-'
-      var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
-      var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
-      var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
-      var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-      return Y + M + D + h + m + s
     }
   }
 }

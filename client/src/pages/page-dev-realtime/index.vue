@@ -54,41 +54,29 @@
             <el-table-column align="center" prop="sensorValue" label="采集数值"></el-table-column>
           </el-table>
           <template slot="footer">
-            <el-pagination
-              align="center"
-              background
-              @size-change="diahandleSizeChange"
-              @current-change="diahandleCurrentChange"
-              :current-page="diacurrentPage"
-              :page-sizes="[10, 20, 50, 100]"
-              :page-size="diapageSize"
-              layout="prev, pager, next, jumper, sizes"
-              :total="diatotalItem">
-            </el-pagination>
-            </template>
+            <pagination
+              :total="diatotalItem"
+              @pageChange="diapageChange">
+            </pagination>
+          </template>
         </el-dialog>
         </template>
       </el-table-column>
     </el-table>
 
     <template slot="footer" align="center">
-      <el-pagination
-        align="center"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="pageSize"
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalItem">
-      </el-pagination>
+      <pagination
+        :total="totalItem"
+        @pageChange="pageChange">
+      </pagination>
     </template>
   </d2-container>
 </template>
 
 <script>
+import pagination from '@/components/pagination/pagination.vue'
 // import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -294,26 +282,21 @@ export default {
       dialogTableVisible: false
     }
   },
+  components: {
+    pagination: pagination
+  },
   created: function () {
     this.initPage()
     // this.initData()
   },
   methods: {
-    handleSizeChange (pSize) {
-      this.pageSize = pSize
-      // alert('每页条数:' + pSize)
+    pageChange (page) {
+      this.pageSize = page.pageSize
+      this.currentPage = page.currentPage
     },
-    handleCurrentChange (curPage) {
-      this.currentPage = curPage
-      // alert('当前页：' + curPage)
-    },
-    diahandleSizeChange (pSize) {
-      this.diapageSize = pSize
-      // alert('每页条数:' + pSize)
-    },
-    diahandleCurrentChange (curPage) {
-      this.diacurrentPage = curPage
-      // alert('当前页：' + curPage)
+    diapageChange (page) {
+      this.diapageSize = page.pageSize
+      this.diacurrentPage = page.currentPage
     },
     handleEdit (index, row) {
       this.dialogTableVisible = true

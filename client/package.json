@@ -38,6 +38,7 @@
     "lowdb": "^1.0.0",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
+    "mongodb": "^3.1.7",
     "particles.js": "^2.0.0",
     "screenfull": "^3.3.3",
     "sequelize": "^4.39.0",

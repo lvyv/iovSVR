@@ -22,10 +22,24 @@ export default {
     })
   },
   getTrips (criteria) {
-    // console.log(`/trips?${criteria}`)
+    // alert(`/trips?${criteria}`)
     return this.execute('get', `/trips?${criteria}`)
+  },
+  getSensorCfg (criteria) {
+    // alert(`/sensor_cfg?${criteria}`)
+    return this.execute('get', `/sensor_cfgs?${criteria}`)
+  },
+  getDevInfo (criteria) {
+    // alert(`/dev_info?${criteria}`)
+    return this.execute('get', `/dev_infos?${criteria}`)
+  },
+  getSensors (criteria) {
+    // alert(`/sensors?${criteria}`)
+    return this.execute('get', `/sensors?${criteria}`)
+  },
+  getSensorData (senid, sTime, eTime) {
+    return this.execute('get', `/mongodb/sensor_data/s_data/${senid}/${sTime}/${eTime}`)
   }
-
 //   getPost (id) {
 //     return this.execute('get', `/posts/${id}`)
 //   },
